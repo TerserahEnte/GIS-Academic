@@ -22,6 +22,10 @@ Route::get('/gedung/{gedung}', function ($gedung) {
 // Route::get('/info-{info}', function ($info) {
 //     return view('info', ['info' => $info]);
 // });
+
 Route::get('/info', function () {
     return view('info');
 })->name('info');
+Route::get('/denah', function () {
+    return view('denah');
+})->name('denah');
