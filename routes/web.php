@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\NavigationController;
 
 // Route::get('/', function () {
 //     return route('fakultas');
@@ -29,3 +30,9 @@ Route::get('/info', function () {
 Route::get('/denah', function () {
     return view('denah');
 })->name('denah');
+Route::get('/denah-dev', function () {
+    return view('denah-dev');
+})->name('denah-dev');
+
+Route::get('/api/navigation', [NavigationController::class, 'findPath']);
+Route::get('/api/graph-data', [NavigationController::class, 'getGraphData']);

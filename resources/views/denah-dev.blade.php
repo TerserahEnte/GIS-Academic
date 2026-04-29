@@ -31,30 +31,7 @@
             </hero>
 
             <content>
-                <div id="runganFoto-card"
-                    class="w-full max-w-md mx-auto rounded-xl px-4 py-6 my-10 bg-gray-200 shadow-lg">
-
-                    <div class="w-full flex flex-col gap-3">
-                        <p class="text-center text-2xl font-bold">Peta</p>
-
-                        <!-- Map should fill container -->
-                        <div id="map" style="height: 300px;" class="w-full h-64 rounded-lg"></div>
-
-                        <button id="nextFloor-btn" class="w-full rounded-4xl bg-white py-2 font-bold">
-                            Lantai Berikutnya
-                        </button>
-
-                        <div id="floor-btn" class="grid grid-cols-3 gap-3 w-full">
-                            <button class="rounded-4xl bg-white py-2 font-bold">L1</button>
-                            <button class="rounded-4xl bg-stone-700 text-white py-2 font-bold">L2</button>
-                            <button class="rounded-4xl bg-white py-2 font-bold">L3</button>
-                        </div>
-
-                        <button id="jadwal-btn" class="w-full rounded-4xl bg-stone-700 text-white py-2 mt-4 font-bold">
-                            Lihat Informasi Ruangan
-                        </button>
-                    </div>
-                </div>
+                <div id="map" style="height: 1000px;" class="w-full h-64 rounded-lg"></div>
             </content>
         </main>
 
@@ -87,19 +64,19 @@
         // --- DUMMY DATA TEST ---
 
         // 1. Pretend these are nodes from your future Graph
-        // const nodeLocations = {
-        //     "start": [515, 1101],
-        //     "hallway_1": [519, 320],
-        //     "corner_A": [789, 313],
-        //     "target": [858, 305]
-        // };
+        const nodeLocations = {
+            "start": [515, 1101],
+            "hallway_1": [519, 320],
+            "corner_A": [789, 313],
+            "target": [858, 305]
+        };
 
-        // // 2. Pretend this is the result of your Dijkstra's algorithm
-        // // It returns a sequence of node IDs
-        // const pathResult = ["start", "hallway_1", "corner_A", "target"];
+        // 2. Pretend this is the result of your Dijkstra's algorithm
+        // It returns a sequence of node IDs
+        const pathResult = ["start", "hallway_1", "corner_A", "target"];
 
-        // // 3. Convert those IDs into the [y, x] coordinates Leaflet needs
-        // const pathCoordinates = pathResult.map(id => nodeLocations[id]);
+        // 3. Convert those IDs into the [y, x] coordinates Leaflet needs
+        const pathCoordinates = pathResult.map(id => nodeLocations[id]);
 
 
 
@@ -128,7 +105,7 @@
 
 
 
-        // // 4. Draw the line
+        // 4. Draw the line
         // var pathLine = L.polyline(pathCoordinates, {
         //     color: 'red',
         //     weight: 4,
@@ -137,29 +114,47 @@
         //     lineJoin: 'round'
         // }).addTo(map);
 
-        // // Optional: Add markers at start and end
+        // Optional: Add markers at start and end
         // L.marker(nodeLocations["start"]).addTo(map).bindPopup("Start");
         // L.marker(nodeLocations["target"]).addTo(map).bindPopup("Destination");
 
+        const nodeLayer = L.layerGroup().addTo(map);
+        const edgeLayer = L.layerGroup().addTo(map);
 
-        // Test Server Side Path Finding Procces
-        async function getPath(startId, endId) {
-            const response = await fetch(`/api/navigation?start=${startId}&end=${endId}`);
-            const nodes = await response.json();
+        async function visualizeGraph(floor) {
+            const response = await fetch(`/api/graph-data?floor=${floor}`);
+            const data = await response.json();
 
-            // Map the Laravel 'lat/lng' back to Leaflet [y, x]
-            const latlngs = nodes.map(node => [node.lat, node.lng]);
+            nodeLayer.clearLayers();
+            edgeLayer.clearLayers();
 
-            // Draw the result
-            L.polyline(latlngs, {
-                color: 'blue',
-                weight: 5
-            }).addTo(map);
+            // 1. Draw Edges (Lines between nodes)
+            data.edges.forEach(edge => {
+                const coords = [
+                    [edge.from_node.lat, edge.from_node.lng],
+                    [edge.to_node.lat, edge.to_node.lng]
+                ];
+                L.polyline(coords, {
+                    color: 'gray',
+                    weight: 2,
+                    dashArray: '5, 5'
+                }).addTo(edgeLayer);
+            });
+
+            // 2. Draw Nodes (Small circles)
+            data.nodes.forEach(node => {
+                L.circleMarker([node.lat, node.lng], {
+                        radius: 5,
+                        color: 'black',
+                        fillColor: 'yellow',
+                        fillOpacity: 1
+                    })
+                    .bindTooltip(`ID: ${node.id} - ${node.name}`) // Show ID on hover
+                    .addTo(nodeLayer);
+            });
         }
 
-        getPath(1, 11);
-
-
+        visualizeGraph(1);
 
         // Add a small box to the UI
         var info = L.control({
@@ -187,7 +182,7 @@
             const gridStyle = {
                 color: '#000',
                 weight: 1,
-                opacity: 0.1, // 40% transparency
+                opacity: 0.2, // 40% transparency
                 interactive: false // Mouse clicks pass through to the map
             };
 
@@ -209,7 +204,7 @@
         }
 
         // Call it with a step of 10 units
-        drawGrid(10);
+        drawGrid(30);
     </script>
 
 </body>
