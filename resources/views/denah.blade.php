@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Floor Plan Map</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -45,8 +44,8 @@
                         </button>
 
                         <div id="floor-btn" class="grid grid-cols-3 gap-3 w-full">
-                            <button class="rounded-4xl bg-white py-2 font-bold">L1</button>
-                            <button class="rounded-4xl bg-stone-700 text-white py-2 font-bold">L2</button>
+                            <button class="rounded-4xl bg-stone-700 text-white py-2 font-bold">L1</button>
+                            <button class="rounded-4xl bg-white py-2 font-bold">L2</button>
                             <button class="rounded-4xl bg-white py-2 font-bold">L3</button>
                         </div>
 
@@ -66,132 +65,174 @@
     </div>
 
 
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-polylinedecorator/1.6.0/leaflet.polylineDecorator.min.js">
-    </script>
     <script>
-        var map = L.map('map', {
-            crs: L.CRS.Simple,
-            minZoom: -2
+        let map;
+        let nodeLayer, edgeLayer, weightLayer, pathLayer;
+        let image;
+        let imageUrls = {};
+        let bounds;
+
+        let currentPathNodes = [];
+        let activeFloor = 1;
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // =========================
+            // 1. INIT MAP
+            // =========================
+            map = L.map('map', {
+                crs: L.CRS.Simple,
+                minZoom: -2,
+                scrollWheelZoom: false,
+                smoothWheelZoom: true,
+                smoothSensitivity: 1,
+            });
+
+            // =========================
+            // 2. BOUNDS + IMAGE
+            // =========================
+            bounds = [
+                [0, 0],
+                [1221, 1441]
+            ];
+
+            imageUrls = {
+                1: '{{ asset('images/Denah E11-Lantai-1.png') }}',
+                2: '{{ asset('images/Denah E11-Lantai-2.png') }}',
+                3: '{{ asset('images/Denah E11-Lantai-3.png') }}'
+            };
+
+            image = L.imageOverlay(imageUrls[1], bounds).addTo(map);
+            map.fitBounds(bounds);
+
+            // =========================
+            // 3. LAYERS (IMPORTANT FIX)
+            // =========================
+            nodeLayer = L.layerGroup().addTo(map);
+            edgeLayer = L.layerGroup().addTo(map);
+            weightLayer = L.layerGroup().addTo(map);
+            pathLayer = L.layerGroup().addTo(map); // ❗ FIXED (was outside before)
+
+            // =========================
+            // 4. INIT FEATURES
+            // =========================
+            initCoordinatesShow();
+            initFloorButtons();
+            //drawGrid(10);
+
+            // =========================
+            // 5. INITIAL PATH
+            // =========================
+            getPath(8, 20);
         });
 
-        // So 0,0 was the left bottom and the 1221, 1441 was the height x width image
-        var bounds = [
-            [0, 0],
-            [1221, 1441]
-        ];
 
-        var image = L.imageOverlay('{{ asset('images/Denah E11-Lantai-1.png') }}', bounds).addTo(map);
-        map.fitBounds(bounds);
-
-        // --- DUMMY DATA TEST ---
-
-        // 1. Pretend these are nodes from your future Graph
-        // const nodeLocations = {
-        //     "start": [515, 1101],
-        //     "hallway_1": [519, 320],
-        //     "corner_A": [789, 313],
-        //     "target": [858, 305]
-        // };
-
-        // // 2. Pretend this is the result of your Dijkstra's algorithm
-        // // It returns a sequence of node IDs
-        // const pathResult = ["start", "hallway_1", "corner_A", "target"];
-
-        // // 3. Convert those IDs into the [y, x] coordinates Leaflet needs
-        // const pathCoordinates = pathResult.map(id => nodeLocations[id]);
-
-
-
-        // // 1. Create your base path as before
-        // var pathLine = L.polyline(pathCoordinates, {
-        //     color: 'red',
-        //     weight: 4
-        // }).addTo(map);
-
-        // // 2. Add the Arrow Decorator
-        // var decorator = L.polylineDecorator(pathLine, {
-        //     patterns: [{
-        //         offset: '10%', // Start 10% into the line
-        //         repeat: '20%', // Repeat every 20% of the line length
-        //         symbol: L.Symbol.arrowHead({
-        //             pixelSize: 15,
-        //             polygon: false, // Set to true for a solid triangle head
-        //             pathOptions: {
-        //                 stroke: true,
-        //                 color: 'red',
-        //                 weight: 2
-        //             }
-        //         })
-        //     }]
-        // }).addTo(map);
-
-
-
-        // // 4. Draw the line
-        // var pathLine = L.polyline(pathCoordinates, {
-        //     color: 'red',
-        //     weight: 4,
-        //     opacity: 0.8,
-        //     dashArray: '10, 10', // Optional: makes it a dashed line
-        //     lineJoin: 'round'
-        // }).addTo(map);
-
-        // // Optional: Add markers at start and end
-        // L.marker(nodeLocations["start"]).addTo(map).bindPopup("Start");
-        // L.marker(nodeLocations["target"]).addTo(map).bindPopup("Destination");
-
-
-        // Test Server Side Path Finding Procces
+        // ======================================================
+        // PATHFINDING
+        // ======================================================
         async function getPath(startId, endId) {
+
             const response = await fetch(`/api/navigation?start=${startId}&end=${endId}`);
-            const nodes = await response.json();
+            currentPathNodes = await response.json();
 
-            // Map the Laravel 'lat/lng' back to Leaflet [y, x]
-            const latlngs = nodes.map(node => [node.lat, node.lng]);
-
-            // Draw the result
-            L.polyline(latlngs, {
-                color: 'blue',
-                weight: 5
-            }).addTo(map);
+            drawPathForCurrentFloor();
         }
 
-        getPath(1, 11);
+        function drawPathForCurrentFloor() {
+
+            if (!pathLayer) return; // safety check
+
+            pathLayer.clearLayers();
+
+            const floorNodes = currentPathNodes.filter(
+                node => node.floor == activeFloor
+            );
+
+            if (floorNodes.length > 1) {
+                const latlngs = floorNodes.map(n => [n.lat, n.lng]);
+
+                L.polyline(latlngs, {
+                    color: 'blue',
+                    weight: 5,
+                    opacity: 0.8
+                }).addTo(pathLayer);
+            }
+        }
 
 
+        // ======================================================
+        // FLOOR BUTTONS
+        // ======================================================
+        function initFloorButtons() {
 
-        // Add a small box to the UI
-        var info = L.control({
-            position: 'bottomright'
-        });
-        info.onAdd = function() {
-            this._div = L.DomUtil.create('div', 'coords-display');
-            // this._div.style.background = 'white';
-            this._div.style.padding = '2px';
-            // this._div.style.border = '1px solid black';
-            this._div.innerHTML = 'Hover over map';
-            return this._div;
-        };
-        info.addTo(map);
+            document.querySelectorAll('#floor-btn button').forEach(button => {
 
-        // Update the box on mousemove
-        map.on('mousemove', function(e) {
-            var lat = e.latlng.lat.toFixed(2);
-            var lng = e.latlng.lng.toFixed(2);
-            info._div.innerHTML = "Y: " + lat + " | X: " + lng;
-        });
+                button.addEventListener('click', function() {
 
-        // It was for Grid Display (Dev Only)
+                    activeFloor = this.innerText.replace('L', '');
+
+                    if (imageUrls[activeFloor]) {
+                        image.setUrl(imageUrls[activeFloor]);
+                    }
+
+                    drawPathForCurrentFloor();
+
+                    document.querySelectorAll('#floor-btn button').forEach(btn => {
+                        btn.classList.remove('bg-stone-700', 'text-white');
+                        btn.classList.add('bg-white');
+                    });
+
+                    this.classList.remove('bg-white');
+                    this.classList.add('bg-stone-700', 'text-white');
+                });
+            });
+        }
+
+
+        // ======================================================
+        // COORDINATES DISPLAY
+        // ======================================================
+        function initCoordinatesShow() {
+
+            const info = L.control({
+                position: 'bottomright'
+            });
+
+            info.onAdd = function() {
+                this._div = L.DomUtil.create('div', 'coords-display');
+                this._div.style.padding = '4px';
+                this._div.innerHTML = 'Hover over map';
+                return this._div;
+            };
+
+            info.addTo(map);
+
+            map.on('mousemove', function(e) {
+                info._div.innerHTML =
+                    `Y: ${e.latlng.lat.toFixed(2)} | X: ${e.latlng.lng.toFixed(2)}`;
+            });
+
+            map.on('click', function(e) {
+                const coords = `${e.latlng.lat.toFixed(2)}, ${e.latlng.lng.toFixed(2)}`;
+
+                navigator.clipboard.writeText(coords)
+                    .then(() => console.log('Copied:', coords));
+            });
+        }
+
+
+        // ======================================================
+        // GRID (DEV ONLY)
+        // ======================================================
         function drawGrid(step) {
+
             const gridStyle = {
                 color: '#000',
                 weight: 1,
-                opacity: 0.1, // 40% transparency
-                interactive: false // Mouse clicks pass through to the map
+                opacity: 0.2,
+                interactive: false
             };
 
-            // Draw Horizontal lines (Y-axis)
             for (let y = 0; y <= bounds[1][0]; y += step) {
                 L.polyline([
                     [y, 0],
@@ -199,7 +240,6 @@
                 ], gridStyle).addTo(map);
             }
 
-            // Draw Vertical lines (X-axis)
             for (let x = 0; x <= bounds[1][1]; x += step) {
                 L.polyline([
                     [0, x],
@@ -207,11 +247,7 @@
                 ], gridStyle).addTo(map);
             }
         }
-
-        // Call it with a step of 10 units
-        drawGrid(10);
     </script>
-
 </body>
 
 </html>
