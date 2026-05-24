@@ -18,7 +18,7 @@
                 <img src="https://placehold.co/200x50">
             </div>
         </header>
-        <main class="py-10 flex-grow">
+        <main class="py-10 grow">
             <hero>
                 <div class="flex items-center text-center justify-center mx-auto px-4 ">
                     <div class="grid grid-cols-1 gap-2">
@@ -123,7 +123,12 @@
             // =========================
             // 5. INITIAL PATH
             // =========================
-            getPath(8, 20);
+            const urlParams = new URLSearchParams(window.location.search);
+            const start = urlParams.get('start');
+            const end = urlParams.get('end');
+            if (start && end) {
+                getPath(start, end);
+            }
         });
 
 
@@ -135,7 +140,11 @@
             const response = await fetch(`/api/navigation?start=${startId}&end=${endId}`);
             currentPathNodes = await response.json();
 
-            drawPathForCurrentFloor();
+            if (currentPathNodes.length > 0) {
+                switchFloor(currentPathNodes[0].floor);
+            } else {
+                drawPathForCurrentFloor();
+            }
         }
 
         function drawPathForCurrentFloor() {
@@ -168,23 +177,27 @@
             document.querySelectorAll('#floor-btn button').forEach(button => {
 
                 button.addEventListener('click', function() {
-
-                    activeFloor = this.innerText.replace('L', '');
-
-                    if (imageUrls[activeFloor]) {
-                        image.setUrl(imageUrls[activeFloor]);
-                    }
-
-                    drawPathForCurrentFloor();
-
-                    document.querySelectorAll('#floor-btn button').forEach(btn => {
-                        btn.classList.remove('bg-stone-700', 'text-white');
-                        btn.classList.add('bg-white');
-                    });
-
-                    this.classList.remove('bg-white');
-                    this.classList.add('bg-stone-700', 'text-white');
+                    switchFloor(this.innerText.replace('L', ''));
                 });
+            });
+        }
+
+        function switchFloor(floor) {
+            activeFloor = floor;
+
+            if (imageUrls[activeFloor]) {
+                image.setUrl(imageUrls[activeFloor]);
+            }
+
+            drawPathForCurrentFloor();
+
+            document.querySelectorAll('#floor-btn button').forEach(btn => {
+                btn.classList.remove('bg-stone-700', 'text-white');
+                btn.classList.add('bg-white');
+                if (btn.innerText.replace('L', '') == floor) {
+                    btn.classList.remove('bg-white');
+                    btn.classList.add('bg-stone-700', 'text-white');
+                }
             });
         }
 
