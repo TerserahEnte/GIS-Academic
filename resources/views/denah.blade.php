@@ -43,10 +43,17 @@
                             Lantai Berikutnya
                         </button>
 
-                        <div id="floor-btn" class="grid grid-cols-3 gap-3 w-full">
+                        <div id="floor-btn" class="grid grid-cols-5 gap-3 w-full">
                             <button class="rounded-4xl bg-stone-700 text-white py-2 font-bold">L1</button>
                             <button class="rounded-4xl bg-white py-2 font-bold">L2</button>
                             <button class="rounded-4xl bg-white py-2 font-bold">L3</button>
+                            <button class="rounded-4xl bg-white py-2 font-bold">L4</button>
+                            <button class="rounded-4xl bg-white py-2 font-bold">L5</button>
+                            <button class="rounded-4xl bg-white py-2 font-bold">L6</button>
+                            <button class="rounded-4xl bg-white py-2 font-bold">L7</button>
+                            <button class="rounded-4xl bg-white py-2 font-bold">L8</button>
+                            <button class="rounded-4xl bg-white py-2 font-bold">L9</button>
+                            <button class="rounded-4xl bg-white py-2 font-bold">L10</button>
                         </div>
 
                         <button id="jadwal-btn" class="w-full rounded-4xl bg-stone-700 text-white py-2 mt-4 font-bold">
@@ -93,13 +100,20 @@
             // =========================
             bounds = [
                 [0, 0],
-                [1221, 1441]
+                [1080, 1920]
             ];
 
             imageUrls = {
-                1: '{{ asset('images/Denah E11-Lantai-1.png') }}',
-                2: '{{ asset('images/Denah E11-Lantai-2.png') }}',
-                3: '{{ asset('images/Denah E11-Lantai-3.png') }}'
+                1: '{{ asset('images/L1.png') }}',
+                2: '{{ asset('images/L2-L4.png') }}',
+                3: '{{ asset('images/L2-L4.png') }}',
+                4: '{{ asset('images/L2-L4.png') }}',
+                5: '{{ asset('images/L5.png') }}',
+                6: '{{ asset('images/L6-L9.png') }}',
+                7: '{{ asset('images/L6-L9.png') }}',
+                8: '{{ asset('images/L6-L9.png') }}',
+                9: '{{ asset('images/L6-L9.png') }}',
+                10: '{{ asset('images/L10.png') }}'
             };
 
             image = L.imageOverlay(imageUrls[1], bounds).addTo(map);

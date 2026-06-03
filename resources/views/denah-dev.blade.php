@@ -32,10 +32,17 @@
             <content>
                 <div id="map" style="height: 700px;" class="w-full h-64 rounded-lg"></div>
                 <div class="mt-5 p-2 bg-stone-300">
-                    <div id="floor-btn" class="grid grid-cols-3 gap-3 w-full">
+                    <div id="floor-btn" class="grid grid-cols-5 gap-3 w-full">
                         <button class="rounded-4xl bg-stone-700 text-white py-2 font-bold">L1</button>
                         <button class="rounded-4xl bg-white py-2 font-bold">L2</button>
                         <button class="rounded-4xl bg-white py-2 font-bold">L3</button>
+                        <button class="rounded-4xl bg-white py-2 font-bold">L4</button>
+                        <button class="rounded-4xl bg-white py-2 font-bold">L5</button>
+                        <button class="rounded-4xl bg-white py-2 font-bold">L6</button>
+                        <button class="rounded-4xl bg-white py-2 font-bold">L7</button>
+                        <button class="rounded-4xl bg-white py-2 font-bold">L8</button>
+                        <button class="rounded-4xl bg-white py-2 font-bold">L9</button>
+                        <button class="rounded-4xl bg-white py-2 font-bold">L10</button>
                     </div>
                 </div>
             </content>
@@ -68,13 +75,20 @@
 
             bounds = [
                 [0, 0],
-                [1221, 1441]
+                [1080, 1920]
             ];
 
             imageUrls = {
-                1: '{{ asset('images/Denah E11-Lantai-1.png') }}',
-                2: '{{ asset('images/Denah E11-Lantai-2.png') }}',
-                3: '{{ asset('images/Denah E11-Lantai-3.png') }}'
+                1: '{{ asset('images/L1.png') }}',
+                2: '{{ asset('images/L2-L4.png') }}',
+                3: '{{ asset('images/L2-L4.png') }}',
+                4: '{{ asset('images/L2-L4.png') }}',
+                5: '{{ asset('images/L5.png') }}',
+                6: '{{ asset('images/L6-L9.png') }}',
+                7: '{{ asset('images/L6-L9.png') }}',
+                8: '{{ asset('images/L6-L9.png') }}',
+                9: '{{ asset('images/L6-L9.png') }}',
+                10: '{{ asset('images/L10.png') }}'
             };
 
             image = L.imageOverlay(imageUrls[1], bounds).addTo(map);
@@ -89,7 +103,7 @@
             initCoordinatesShow();
             visualizeGraph(1);
             initFloorButtons();
-            drawGrid(30);
+            drawGrid(10);
         });
 
 
@@ -117,7 +131,7 @@
             });
 
             map.on('click', function(e) {
-                const coords = `${e.latlng.lat.toFixed(2)}, ${e.latlng.lng.toFixed(2)}`;
+            const coords = `${Math.round(e.latlng.lat)}, ${Math.round(e.latlng.lng)}`;
 
                 navigator.clipboard.writeText(coords).then(() => {
                     console.log('Copied:', coords);

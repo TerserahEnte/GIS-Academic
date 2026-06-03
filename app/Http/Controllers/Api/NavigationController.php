@@ -38,4 +38,10 @@ class NavigationController extends Controller
             })->with(['fromNode', 'toNode'])->get(),
         ]);
     }
+
+    // Tambahkan method ini untuk mengambil seluruh data node
+    public function getAllNodes()
+    {
+        return response()->json(Node::all());
+    }
 }

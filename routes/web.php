@@ -34,10 +34,11 @@ Route::get('/denah-dev', function () {
     return view('denah-dev');
 })->name('denah-dev');
 Route::get('/navigasi', function () {
-    return view('navigation');
+    return view('navigasi');
 })->name('navigation');
 
 
 
 Route::get('/api/navigation', [NavigationController::class, 'findPath']);
 Route::get('/api/graph-data', [NavigationController::class, 'getGraphData']);
+Route::get('/api/nodes', [NavigationController::class, 'getAllNodes']);
