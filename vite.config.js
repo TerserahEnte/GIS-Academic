@@ -13,8 +13,13 @@ export default defineConfig({
     //server: {
     //    host: '0.0.0.0',
     //    port: 5173,
+    //    //https: true,
+    //    cors: {
+    //        origin: '*',
+    //    },
+    //
     //    hmr: {
-    //        host: '192.168.1.194',
+    //        host: '192.168.1.195',
     //    },
     //},
 });

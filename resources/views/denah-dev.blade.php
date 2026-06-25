@@ -127,7 +127,7 @@
             map.on('mousemove', function(e) {
                 const lat = e.latlng.lat.toFixed(2);
                 const lng = e.latlng.lng.toFixed(2);
-                info._div.innerHTML = `Y: ${lat} | X: ${lng}`;
+                info._div.innerHTML = `Y (lat): ${lat} | X (lng): ${lng}`;
             });
 
             map.on('click', function(e) {

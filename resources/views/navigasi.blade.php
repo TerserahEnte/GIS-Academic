@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Floor Plan Map</title>
-
+    <script src="https://unpkg.com/html5-qrcode"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -34,7 +34,8 @@
                 <div id="menu-card" class="w-full max-w-md mx-auto rounded-xl py-3">
                     <div id="menu-btn" class="grid grid-cols-2 gap-3">
                         <button id="denah-btn" class="rounded-4xl bg-stone-700 text-white py-2 font-bold">Denah</button>
-                        <button id="jadwal-btn" class="rounded-4xl bg-white py-2 border-2 border-stone-700">Jadwal</button>
+                        <button id="jadwal-btn"
+                            class="rounded-4xl bg-white py-2 border-2 border-stone-700">Jadwal</button>
                     </div>
                 </div>
 
@@ -48,18 +49,21 @@
                             menampilkan posisi anda di denah.
                         </p>
 
-                    <p class="text-center pt-2">Tentukan lokasi awal dan tujuan Anda</p>
+                        <p class="text-center pt-2">Tentukan lokasi awal dan tujuan Anda</p>
                         <div class="px-4">
-                        <label class="font-bold text-left" for="endNodeSearch">Lokasi Tujuan (Cari Ruangan/Dosen):</label>
-                        <input list="endNodeList"
+                            <label class="font-bold text-left" for="endNodeSearch">Lokasi Tujuan (Cari
+                                Ruangan/Dosen):</label>
+                            <input list="endNodeList"
                                 class="bg-white rounded-4xl w-full mt-2 py-3 px-6 shadow-sm focus:outline-none focus:ring-2 focus:ring-stone-500"
-                            type="text" name="endNodeSearch" id="endNodeSearch" placeholder="Pilih lokasi tujuan di sini...">
-                        <datalist id="endNodeList">
+                                type="text" name="endNodeSearch" id="endNodeSearch"
+                                placeholder="Pilih lokasi tujuan di sini...">
+                            <datalist id="endNodeList">
                                 <!-- List data node akan dimuat melalui JavaScript -->
                             </datalist>
                         </div>
 
-                        <button
+                        <!-- Scannner QR Code -->
+                        <button id="openScannerBtn"
                             class="bg-white rounded-2xl w-max self-center mt-2 py-1.5 px-6 hover:border-2 hover:border-stone-700">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 448 512"><!--!Font Awesome Free v7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.-->
@@ -68,22 +72,36 @@
                             </svg>
                             Scan QR
                         </button>
+                        <div id="scannerContainer"
+                            class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50">
 
+                            <div class="bg-white p-4 rounded-xl w-80">
+                                <div id="reader"></div>
+
+                                <button id="closeScannerBtn" class="mt-4 w-full bg-red-500 text-white py-2 rounded-xl">
+                                    Tutup Scanner
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Lokasi Awal -->
                         <div class="grid grid-cols-2 bg-white rounded-4xl px-4 py-2">
-                        <label>Lokasi Awal:</label>
-                        <select id="startNodeSelect" class="bg-transparent focus:outline-none">
-                            <option value="" disabled selected>Pilih lokasi awal...</option>
+                            <label>Lokasi Awal:</label>
+                            <select id="startNodeSelect" class="bg-transparent focus:outline-none">
+                                <option value="" disabled selected>Pilih lokasi awal...</option>
                             </select>
                         </div>
 
-                        <button id="submit-navigation" class="w-full max-w-md mx-auto rounded-4xl bg-stone-700 text-white py-3">Lihat
+                        <button id="submit-navigation"
+                            class="w-full max-w-md mx-auto rounded-4xl bg-stone-700 text-white py-3">Lihat
                             Denah</button>
 
                     </div>
                 </div>
 
                 <!-- Jadwal Menu -->
-                <div id="jadwal-card" class="hidden w-full max-w-md mx-auto rounded-xl px-4 py-6 my-10 bg-gray-200 shadow-lg">
+                <div id="jadwal-card"
+                    class="hidden w-full max-w-md mx-auto rounded-xl px-4 py-6 my-10 bg-gray-200 shadow-lg">
 
                     <div class="w-full flex flex-col gap-3">
                         <p class="text-center text-2xl font-bold">Jadwal</p>
@@ -105,7 +123,8 @@
                 </div>
 
                 <!-- Kelas Menu -->
-                <div id="kelas-card" class="hidden w-full max-w-md mx-auto rounded-xl px-4 py-6 my-10 bg-gray-200 shadow-lg">
+                <div id="kelas-card"
+                    class="hidden w-full max-w-md mx-auto rounded-xl px-4 py-6 my-10 bg-gray-200 shadow-lg">
 
                     <div class="w-full flex flex-col gap-3">
 
@@ -173,6 +192,7 @@
             initMenuButtons();
             fetchNodes();
             initNavigationSubmit();
+            initScanner();
         });
 
         // ======================================================
@@ -224,19 +244,39 @@
                     const endNodeList = document.getElementById('endNodeList');
                     const startNodeSelect = document.getElementById('startNodeSelect');
 
-                    nodes.forEach(node => {
-                        const nodeName = node.name || `Ruangan ${node.id}`;
-                        
-                        // Untuk datalist (input pencarian)
-                        const optionList = document.createElement('option');
-                        optionList.value = nodeName; 
-                        endNodeList.appendChild(optionList);
+                    // Kelompokkan data node berdasarkan properti 'floor'
+                    const groupedNodes = nodes.reduce((groups, node) => {
+                        const floor = node.floor;
+                        if (!groups[floor]) groups[floor] = [];
+                        groups[floor].push(node);
+                        return groups;
+                    }, {});
 
-                        // Untuk select dropdown
-                        const optionSelect = document.createElement('option');
-                        optionSelect.value = node.id;
-                        optionSelect.textContent = nodeName;
-                        startNodeSelect.appendChild(optionSelect);
+                    // Ambil daftar lantai dan urutkan secara numerik (Lantai 1, 2, dst)
+                    const sortedFloors = Object.keys(groupedNodes).sort((a, b) => a - b);
+
+                    sortedFloors.forEach(floor => {
+                        // Buat elemen <optgroup> untuk dropdown select (judul lantai otomatis tercetak tebal)
+                        const optGroup = document.createElement('optgroup');
+                        optGroup.label = `Lantai ${floor}`;
+
+                        groupedNodes[floor].forEach(node => {
+                            const roomName = node.name || `Ruangan ${node.id}`;
+                            const fullDisplayName = `${roomName} (Lantai ${node.floor})`;
+
+                            // Masukkan ke datalist pencarian (tetap simpan nama lengkap agar filter pencarian akurat)
+                            const optionList = document.createElement('option');
+                            optionList.value = fullDisplayName;
+                            endNodeList.appendChild(optionList);
+
+                            // Masukkan ke dropdown select (di bawah grup lantai)
+                            const optionSelect = document.createElement('option');
+                            optionSelect.value = node.id;
+                            optionSelect.textContent =
+                                roomName; // Cukup nama ruangan karena sudah ada di bawah grup lantai
+                            optGroup.appendChild(optionSelect);
+                        });
+                        startNodeSelect.appendChild(optGroup);
                     });
                 })
                 .catch(error => console.error('Gagal mengambil data node:', error));
@@ -247,7 +287,7 @@
         // ======================================================
         function initNavigationSubmit() {
             const submitBtn = document.getElementById('submit-navigation');
-            
+
             if (submitBtn) {
                 submitBtn.addEventListener('click', () => {
                     const startId = document.getElementById('startNodeSelect').value;
@@ -260,8 +300,8 @@
 
                     // Cari object node tujuan berdasarkan teks yang diketik pengguna
                     const endNode = nodesData.find(node => {
-                        const name = node.name || `Ruangan ${node.id}`;
-                        return name === endName;
+                        const displayName = `${node.name || `Ruangan ${node.id}`} (Lantai ${node.floor})`;
+                        return displayName === endName;
                     });
 
                     if (!endNode) {
@@ -272,6 +312,99 @@
                     // Redirect ke route denah dengan URL parameters (start & end)
                     window.location.href = `{{ route('denah') }}?start=${startId}&end=${endNode.id}`;
                 });
+            }
+        }
+
+        function initScanner() {
+            const openScannerBtn = document.getElementById('openScannerBtn');
+            const closeScannerBtn = document.getElementById('closeScannerBtn');
+            const scannerContainer = document.getElementById('scannerContainer');
+            const startNodeSelect = document.getElementById('startNodeSelect');
+
+            let html5QrCode;
+
+            // OPEN SCANNER
+            openScannerBtn.addEventListener('click', () => {
+
+                scannerContainer.classList.remove('hidden');
+
+                html5QrCode = new Html5Qrcode("reader");
+
+                Html5Qrcode.getCameras().then(devices => {
+
+                    if (devices && devices.length) {
+
+                        html5QrCode.start({
+                                facingMode: "environment"
+                            }, // back camera
+                            {
+                                fps: 10,
+                                qrbox: 250
+                            },
+
+                            // SUCCESS SCAN
+                            (decodedText) => {
+
+                                console.log("QR:", decodedText);
+
+                                // check option exists
+                                const optionExists = [...startNodeSelect.options]
+                                    .some(option => option.value === decodedText);
+
+                                if (optionExists) {
+
+                                    startNodeSelect.value = decodedText;
+
+                                    // trigger route recalculation
+                                    startNodeSelect.dispatchEvent(
+                                        new Event('change')
+                                    );
+
+                                    alert("Lokasi berhasil dipilih");
+
+                                    stopScanner();
+
+                                } else {
+                                    alert("Node tidak ditemukan");
+                                }
+                            },
+
+                            // ERROR
+                            (errorMessage) => {
+                                // optional
+                            }
+                        );
+
+                    }
+
+                }).catch(err => {
+                    console.error(err);
+                });
+
+            });
+
+            // CLOSE BUTTON
+            closeScannerBtn.addEventListener('click', () => {
+                stopScanner();
+            });
+
+            // STOP SCANNER CLEANLY
+            function stopScanner() {
+
+                if (html5QrCode) {
+
+                    html5QrCode.stop()
+                        .then(() => {
+
+                            html5QrCode.clear();
+
+                            scannerContainer.classList.add('hidden');
+
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        });
+                }
             }
         }
     </script>

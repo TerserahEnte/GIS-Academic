@@ -39,9 +39,15 @@
                         <!-- Map should fill container -->
                         <div id="map" style="height: 300px;" class="w-full h-64 rounded-lg"></div>
 
-                        <button id="nextFloor-btn" class="w-full rounded-4xl bg-white py-2 font-bold">
+                        <button id="nextFloor-btn"
+                            class="w-full rounded-4xl bg-white py-2 font-bold transition-all duration-300 ease-in-out hover:bg-stone-400 active:bg-stone-700 active:text-white">
                             Lantai Berikutnya
                         </button>
+
+                        <div id="nextFloor-wrn-msg" class="flex items-center justify-center gap-2 hidden">
+                            <svg class="w-4 h-4 fill-red-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free v7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path d="M256 0c14.7 0 28.2 8.1 35.2 21l216 400c6.7 12.4 6.4 27.4-.8 39.5S486.1 480 472 480L40 480c-14.1 0-27.2-7.4-34.4-19.5s-7.5-27.1-.8-39.5l216-400c7-12.9 20.5-21 35.2-21zm0 352a32 32 0 1 0 0 64 32 32 0 1 0 0-64zm0-192c-18.2 0-32.7 15.5-31.4 33.7l7.4 104c.9 12.5 11.4 22.3 23.9 22.3 12.6 0 23-9.7 23.9-22.3l7.4-104c1.3-18.2-13.1-33.7-31.4-33.7z"/></svg>
+                            <p class="font-bold text-red-600">Kamu sudah di lantai terakhir.</p>
+                        </div>
 
                         <div id="floor-btn" class="grid grid-cols-5 gap-3 w-full">
                             <button class="rounded-4xl bg-stone-700 text-white py-2 font-bold">L1</button>
@@ -132,6 +138,7 @@
             // =========================
             initCoordinatesShow();
             initFloorButtons();
+            initNextFloorButton();
             //drawGrid(10);
 
             // =========================
@@ -142,7 +149,7 @@
             const end = urlParams.get('end');
             if (start && end) {
                 getPath(start, end);
-            }
+            };
         });
 
 
@@ -174,11 +181,58 @@
             if (floorNodes.length > 1) {
                 const latlngs = floorNodes.map(n => [n.lat, n.lng]);
 
+                // 1. Draw the main path line
                 L.polyline(latlngs, {
-                    color: 'blue',
-                    weight: 5,
-                    opacity: 0.8
+                    color: '#3b82f6', // Tailwind blue-500
+                    weight: 6,
+                    opacity: 0.7,
+                    lineJoin: 'round'
                 }).addTo(pathLayer);
+
+                // // 2. Add directional arrows on each segment
+                // for (let i = 0; i < latlngs.length - 1; i++) {
+                //     const start = latlngs[i];
+                //     const end = latlngs[i + 1];
+
+                //     const midpoint = [
+                //         (start[0] + end[0]) / 2,
+                //         (start[1] + end[1]) / 2
+                //     ];
+
+                //     // Calculate angle for the arrow rotation
+                //     const angle = Math.atan2(end[0] - start[0], end[1] - start[1]) * (180 / Math.PI);
+
+                //     const arrowIcon = L.divIcon({
+                //         className: 'path-arrow',
+                //         html: `<div style="transform: rotate(${angle}deg); color: #1d4ed8; font-size: 20px; line-height: 1; text-shadow: 0 0 3px white;">➤</div>`,
+                //         iconSize: [20, 20],
+                //         iconAnchor: [10, 10]
+                //     });
+
+                //     L.marker(midpoint, { icon: arrowIcon, interactive: false }).addTo(pathLayer);
+                // }
+
+                // 3. Add Start/End markers if they exist on this floor
+                if (floorNodes[0].id === currentPathNodes[0].id) {
+                    L.circleMarker(latlngs[0], {
+                            radius: 8,
+                            color: '#16a34a',
+                            fillColor: 'white',
+                            fillOpacity: 1,
+                            weight: 3
+                        })
+                        .addTo(pathLayer).bindTooltip("Mulai");
+                }
+                if (floorNodes[floorNodes.length - 1].id === currentPathNodes[currentPathNodes.length - 1].id) {
+                    L.circleMarker(latlngs[latlngs.length - 1], {
+                            radius: 8,
+                            color: '#dc2626',
+                            fillColor: 'white',
+                            fillOpacity: 1,
+                            weight: 3
+                        })
+                        .addTo(pathLayer).bindTooltip("Tujuan");
+                }
             }
         }
 
@@ -194,6 +248,35 @@
                     switchFloor(this.innerText.replace('L', ''));
                 });
             });
+        }
+
+        // ======================================================
+        // NEXT FLOOR LOGIC
+        // ======================================================
+        function initNextFloorButton() {
+            const nextBtn = document.getElementById('nextFloor-btn');
+            const warningMsg = document.getElementById('nextFloor-wrn-msg');
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    if (currentPathNodes.length === 0) {
+                        alert('Belum ada rute navigasi yang aktif.');
+                        return;
+                    }
+
+                    // Ambil daftar lantai unik yang ada di sepanjang rute secara berurutan
+                    const pathFloors = [...new Set(currentPathNodes.map(node => parseInt(node.floor)))];
+
+                    // Cari posisi lantai saat ini di dalam daftar lantai rute
+                    const currentIndex = pathFloors.indexOf(parseInt(activeFloor));
+
+                    if (currentIndex !== -1 && currentIndex < pathFloors.length - 1) {
+                        switchFloor(pathFloors[currentIndex + 1]);
+                    } else {
+                        // alert('Anda sudah berada di lantai terakhir dari rute navigasi ini.');
+                        warningMsg.classList.remove('hidden');
+                    }
+                });
+            }
         }
 
         function switchFloor(floor) {
