@@ -88,6 +88,9 @@
         let currentPathNodes = [];
         let pathSegmentsByFloor = {};
         let activeFloor = 1;
+        let pathSegments = [];
+        let currentSegmentIndex = 0;
+
 
         document.addEventListener('DOMContentLoaded', () => {
 
@@ -163,6 +166,8 @@
             currentPathNodes = await response.json();
 
             pathSegmentsByFloor = {};
+            pathSegments = [];
+            currentSegmentIndex = 0;
 
             let currentSegment = [];
             let currentFloor = null;
@@ -170,39 +175,50 @@
             for (const node of currentPathNodes) {
 
                 if (currentFloor === null) {
-                    currentFloor = node.floor;
+                    currentFloor = Number(node.floor);
                 }
 
-                if (node.floor === currentFloor) {
+                if (Number(node.floor) === currentFloor) {
 
                     currentSegment.push(node);
 
                 } else {
 
+                    // Save ordered segment
+                    pathSegments.push({
+                        floor: currentFloor,
+                        nodes: [...currentSegment]
+                    });
+
+                    // Save grouped by floor
                     if (!pathSegmentsByFloor[currentFloor]) {
                         pathSegmentsByFloor[currentFloor] = [];
                     }
 
-                    pathSegmentsByFloor[currentFloor].push(currentSegment);
+                    pathSegmentsByFloor[currentFloor].push([...currentSegment]);
 
                     currentSegment = [node];
-                    currentFloor = node.floor;
+                    currentFloor = Number(node.floor);
                 }
             }
 
-            if (currentSegment.length > 0) {
+            // Save last segment
+            if (currentSegment.length) {
+
+                pathSegments.push({
+                    floor: currentFloor,
+                    nodes: [...currentSegment]
+                });
 
                 if (!pathSegmentsByFloor[currentFloor]) {
                     pathSegmentsByFloor[currentFloor] = [];
                 }
 
-                pathSegmentsByFloor[currentFloor].push(currentSegment);
+                pathSegmentsByFloor[currentFloor].push([...currentSegment]);
             }
 
-            if (currentPathNodes.length > 0) {
-                switchFloor(currentPathNodes[0].floor);
-            } else {
-                drawPathForCurrentFloor();
+            if (pathSegments.length) {
+                switchFloor(pathSegments[0].floor);
             }
         }
 
@@ -232,7 +248,7 @@
 
             });
 
-            // Draw start marker
+            // Start Marker
             if (
                 currentPathNodes.length &&
                 Number(currentPathNodes[0].floor) === Number(activeFloor)
@@ -246,13 +262,10 @@
                     fillColor: 'white',
                     fillOpacity: 1,
                     weight: 3
-                })
-                .addTo(pathLayer)
-                .bindTooltip("Mulai");
-
+                }).addTo(pathLayer).bindTooltip("Mulai");
             }
 
-            // Draw end marker
+            // End Marker
             if (
                 currentPathNodes.length &&
                 Number(currentPathNodes[currentPathNodes.length - 1].floor) === Number(activeFloor)
@@ -266,12 +279,8 @@
                     fillColor: 'white',
                     fillOpacity: 1,
                     weight: 3
-                })
-                .addTo(pathLayer)
-                .bindTooltip("Tujuan");
-
+                }).addTo(pathLayer).bindTooltip("Tujuan");
             }
-
         }
 
 
@@ -302,17 +311,41 @@
                     }
 
                     // Ambil daftar lantai unik yang ada di sepanjang rute secara berurutan
-                    const pathFloors = [...new Set(currentPathNodes.map(node => parseInt(node.floor)))];
+                    // const pathFloors = [...new Set(currentPathNodes.map(node => parseInt(node.floor)))];
+                    // const pathFloors = [];
+                    // let lastFloor = null;
+                    // currentPathNodes.forEach(node => {
+
+                    //     const floor = parseInt(node.floor);
+
+                    //     if (floor !== lastFloor) {
+                    //         pathFloors.push(floor);
+                    //         lastFloor = floor;
+                    //     }
+
+                    // });
+
+                    // currentSegmentIndex = 0;
+                    // switchFloor(pathSegments[currentSegmentIndex].floor);
 
                     // Cari posisi lantai saat ini di dalam daftar lantai rute
-                    const currentIndex = pathFloors.indexOf(parseInt(activeFloor));
+                    // const currentIndex = pathFloors.indexOf(parseInt(activeFloor));
 
-                    if (currentIndex !== -1 && currentIndex < pathFloors.length - 1) {
-                        switchFloor(pathFloors[currentIndex + 1]);
-                    } else {
-                        // alert('Anda sudah berada di lantai terakhir dari rute navigasi ini.');
-                        warningMsg.classList.remove('hidden');
+                    // if (currentIndex !== -1 && currentIndex < pathFloors.length - 1) {
+                    //     switchFloor(pathFloors[currentIndex + 1]);
+                    // } else {
+                    //     // alert('Anda sudah berada di lantai terakhir dari rute navigasi ini.');
+                    //     warningMsg.classList.remove('hidden');
+                    // }
+                    if (currentSegmentIndex < pathSegments.length - 1) {
+                        currentSegmentIndex++;
+                        switchFloor(pathSegments[currentSegmentIndex].floor);
                     }
+                    else {
+                        warningMsg.classList.remove("hidden");
+                    }
+
+
                 });
             }
         }
