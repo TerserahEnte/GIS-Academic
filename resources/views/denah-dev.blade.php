@@ -131,7 +131,7 @@
             });
 
             map.on('click', function(e) {
-            const coords = `${Math.round(e.latlng.lat)}, ${Math.round(e.latlng.lng)}`;
+                const coords = `${Math.round(e.latlng.lat)}, ${Math.round(e.latlng.lng)}`;
 
                 navigator.clipboard.writeText(coords).then(() => {
                     console.log('Copied:', coords);
@@ -191,6 +191,18 @@
                     })
                     .bindTooltip(`ID: ${node.id} - ${node.name}`)
                     .addTo(nodeLayer);
+
+                // Node ID label
+                L.marker([node.lat + 10, node.lng], { // Adjust lat to position below the node
+                    icon: L.divIcon({
+                        className: 'node-id-label', // Custom class for styling
+                        html: `<span style="background:white;color:red;padding:2px;border:1px solid #ccc;font-size:10px;">${node.id}</span>`,
+                        iconSize: [30, 20], // Approximate size for the label
+                        iconAnchor: [15,
+                            0] // Anchor the top-center of the label to the marker's position
+                    }),
+                    interactive: false
+                }).addTo(nodeLayer);
             });
         }
 

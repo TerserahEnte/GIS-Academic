@@ -68,12 +68,13 @@ class Floor3Seeder extends Seeder
             ['from_node_id' => 356, 'to_node_id' => 357, 'is_stairs' => 0],
             ['from_node_id' => 334, 'to_node_id' => 357, 'is_stairs' => 0],
             ['from_node_id' => 334, 'to_node_id' => 333, 'is_stairs' => 0],
-            ['from_node_id' => 355, 'to_node_id' => 333, 'is_stairs' => 0],
+            // ['from_node_id' => 355, 'to_node_id' => 333, 'is_stairs' => 0], /Test 3 di comment atau dipotong
             ['from_node_id' => 352, 'to_node_id' => 338, 'is_stairs' => 0],
             ['from_node_id' => 338, 'to_node_id' => 337, 'is_stairs' => 0],
             ['from_node_id' => 337, 'to_node_id' => 336, 'is_stairs' => 0],
             ['from_node_id' => 335, 'to_node_id' => 336, 'is_stairs' => 0],
-            ['from_node_id' => 335, 'to_node_id' => 353, 'is_stairs' => 0],
+            // ['from_node_id' => 335, 'to_node_id' => 353, 'is_stairs' => 0], /Test 3 di comment atau dipotong
+            ['from_node_id' => 352, 'to_node_id' => 338, 'is_stairs' => 0],
             ['from_node_id' => 354, 'to_node_id' => 353, 'is_stairs' => 0],
             ['from_node_id' => 355, 'to_node_id' => 354, 'is_stairs' => 0],
             ['from_node_id' => 342, 'to_node_id' => 339, 'is_stairs' => 0],

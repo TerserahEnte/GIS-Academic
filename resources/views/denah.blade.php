@@ -31,7 +31,7 @@
 
             <content>
                 <div id="runganFoto-card"
-                    class="w-full max-w-md mx-auto rounded-xl px-4 py-6 my-10 bg-gray-200 shadow-lg">
+                    class="w-full max-w-lg mx-auto rounded-xl px-4 py-6 my-10 bg-gray-200 shadow-lg">
 
                     <div class="w-full flex flex-col gap-3">
                         <p class="text-center text-2xl font-bold">Peta</p>
@@ -86,6 +86,7 @@
         let bounds;
 
         let currentPathNodes = [];
+        let pathSegmentsByFloor = {};
         let activeFloor = 1;
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -161,6 +162,43 @@
             const response = await fetch(`/api/navigation?start=${startId}&end=${endId}`);
             currentPathNodes = await response.json();
 
+            pathSegmentsByFloor = {};
+
+            let currentSegment = [];
+            let currentFloor = null;
+
+            for (const node of currentPathNodes) {
+
+                if (currentFloor === null) {
+                    currentFloor = node.floor;
+                }
+
+                if (node.floor === currentFloor) {
+
+                    currentSegment.push(node);
+
+                } else {
+
+                    if (!pathSegmentsByFloor[currentFloor]) {
+                        pathSegmentsByFloor[currentFloor] = [];
+                    }
+
+                    pathSegmentsByFloor[currentFloor].push(currentSegment);
+
+                    currentSegment = [node];
+                    currentFloor = node.floor;
+                }
+            }
+
+            if (currentSegment.length > 0) {
+
+                if (!pathSegmentsByFloor[currentFloor]) {
+                    pathSegmentsByFloor[currentFloor] = [];
+                }
+
+                pathSegmentsByFloor[currentFloor].push(currentSegment);
+            }
+
             if (currentPathNodes.length > 0) {
                 switchFloor(currentPathNodes[0].floor);
             } else {
@@ -170,70 +208,70 @@
 
         function drawPathForCurrentFloor() {
 
-            if (!pathLayer) return; // safety check
+            if (!pathLayer) return;
 
             pathLayer.clearLayers();
 
-            const floorNodes = currentPathNodes.filter(
-                node => node.floor == activeFloor
-            );
+            const segments = pathSegmentsByFloor[Number(activeFloor)] || [];
 
-            if (floorNodes.length > 1) {
-                const latlngs = floorNodes.map(n => [n.lat, n.lng]);
+            segments.forEach(segment => {
 
-                // 1. Draw the main path line
-                L.polyline(latlngs, {
-                    color: '#3b82f6', // Tailwind blue-500
-                    weight: 6,
-                    opacity: 0.7,
-                    lineJoin: 'round'
-                }).addTo(pathLayer);
+                if (segment.length >= 2) {
 
-                // // 2. Add directional arrows on each segment
-                // for (let i = 0; i < latlngs.length - 1; i++) {
-                //     const start = latlngs[i];
-                //     const end = latlngs[i + 1];
+                    L.polyline(
+                        segment.map(node => [node.lat, node.lng]),
+                        {
+                            color: '#3b82f6',
+                            weight: 6,
+                            opacity: 0.7,
+                            lineJoin: 'round'
+                        }
+                    ).addTo(pathLayer);
 
-                //     const midpoint = [
-                //         (start[0] + end[0]) / 2,
-                //         (start[1] + end[1]) / 2
-                //     ];
-
-                //     // Calculate angle for the arrow rotation
-                //     const angle = Math.atan2(end[0] - start[0], end[1] - start[1]) * (180 / Math.PI);
-
-                //     const arrowIcon = L.divIcon({
-                //         className: 'path-arrow',
-                //         html: `<div style="transform: rotate(${angle}deg); color: #1d4ed8; font-size: 20px; line-height: 1; text-shadow: 0 0 3px white;">➤</div>`,
-                //         iconSize: [20, 20],
-                //         iconAnchor: [10, 10]
-                //     });
-
-                //     L.marker(midpoint, { icon: arrowIcon, interactive: false }).addTo(pathLayer);
-                // }
-
-                // 3. Add Start/End markers if they exist on this floor
-                if (floorNodes[0].id === currentPathNodes[0].id) {
-                    L.circleMarker(latlngs[0], {
-                            radius: 8,
-                            color: '#16a34a',
-                            fillColor: 'white',
-                            fillOpacity: 1,
-                            weight: 3
-                        })
-                        .addTo(pathLayer).bindTooltip("Mulai");
                 }
-                if (floorNodes[floorNodes.length - 1].id === currentPathNodes[currentPathNodes.length - 1].id) {
-                    L.circleMarker(latlngs[latlngs.length - 1], {
-                            radius: 8,
-                            color: '#dc2626',
-                            fillColor: 'white',
-                            fillOpacity: 1,
-                            weight: 3
-                        })
-                        .addTo(pathLayer).bindTooltip("Tujuan");
-                }
+
+            });
+
+            // Draw start marker
+            if (
+                currentPathNodes.length &&
+                Number(currentPathNodes[0].floor) === Number(activeFloor)
+            ) {
+
+                const start = currentPathNodes[0];
+
+                L.circleMarker([start.lat, start.lng], {
+                    radius: 8,
+                    color: '#16a34a',
+                    fillColor: 'white',
+                    fillOpacity: 1,
+                    weight: 3
+                })
+                .addTo(pathLayer)
+                .bindTooltip("Mulai");
+
             }
+
+            // Draw end marker
+            if (
+                currentPathNodes.length &&
+                Number(currentPathNodes[currentPathNodes.length - 1].floor) === Number(activeFloor)
+            ) {
+
+                const end = currentPathNodes[currentPathNodes.length - 1];
+
+                L.circleMarker([end.lat, end.lng], {
+                    radius: 8,
+                    color: '#dc2626',
+                    fillColor: 'white',
+                    fillOpacity: 1,
+                    weight: 3
+                })
+                .addTo(pathLayer)
+                .bindTooltip("Tujuan");
+
+            }
+
         }
 
 

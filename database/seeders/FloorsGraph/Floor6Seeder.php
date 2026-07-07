@@ -117,7 +117,6 @@ class Floor6Seeder extends Seeder
 
             // Floors 5-6 //
             ['from_node_id' => 541, 'to_node_id' => 641, 'is_stairs' => 1, 'weight' => 1], //Elevator
-            ['from_node_id' => 541, 'to_node_id' => 641, 'is_stairs' => 1, 'weight' => 1], //Elevator
             ['from_node_id' => 543, 'to_node_id' => 642, 'is_stairs' => 1, 'weight' => 10], //Tangga
         ];
 

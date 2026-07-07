@@ -16,9 +16,9 @@ class Floor1Seeder extends Seeder
             ['id' => 103, 'name' => 'Pintu Utara', 'floor' => 1, 'lat' => 954, 'lng' => 724],
 
             // Facilities
-            ['id' => 110, 'name' => 'Ruangan 103', 'floor' => 1, 'lat' => 413, 'lng' => 196],
-            ['id' => 111, 'name' => 'Ruangan 102', 'floor' => 1, 'lat' => 512, 'lng' => 1477],
-            ['id' => 112, 'name' => 'Ruangan 101', 'floor' => 1, 'lat' => 600, 'lng' => 1477],
+            ['id' => 110, 'name' => 'Ruangan 103 (Dosen)', 'floor' => 1, 'lat' => 413, 'lng' => 196],
+            ['id' => 111, 'name' => 'Ruangan 102 (Dosen)', 'floor' => 1, 'lat' => 512, 'lng' => 1477],
+            ['id' => 112, 'name' => 'Ruangan 101 (Dosen)', 'floor' => 1, 'lat' => 600, 'lng' => 1477],
             ['id' => 113, 'name' => 'Gudang', 'floor' => 1, 'lat' => 911, 'lng' => 1682],
 
             // Toilets

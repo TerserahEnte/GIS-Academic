@@ -100,7 +100,7 @@ class Floor4Seeder extends Seeder
             ['from_node_id' => 415, 'to_node_id' => 438, 'is_stairs' => 0],
 
             // Floors 3-4 //
-            ['from_node_id' => 341, 'to_node_id' => 441, 'is_stairs' => 1, 'weight' => 1], //Elevator
+            ['from_node_id' => 341, 'to_node_id' => 441, 'is_stairs' => 1, 'weight' => 1], // Elevator
             ['from_node_id' => 343, 'to_node_id' => 442, 'is_stairs' => 1, 'weight' => 10], //Tangga
         ];
 
