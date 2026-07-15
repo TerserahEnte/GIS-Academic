@@ -18,6 +18,7 @@ class NavigationService
         foreach ($edges as $edge) {
             $graph[$edge->from_node_id][$edge->to_node_id] = $edge->weight;
         }
+        $startTime = microtime(true);
 
         // 2. Initialize Dijkstra variables
         $distances = [];
@@ -51,7 +52,16 @@ class NavigationService
         }
 
         // 4. Reconstruct the Path
-        return $this->reconstructPath($previous, $endId);
+        
+        $path = $this->reconstructPath($previous, $endId);
+        $executionTime = microtime(true) - $startTime;
+        
+        return [
+            'path' => $path,
+            'distance' => $distances[$endId],
+            'execution_time' => $executionTime,
+        ];
+        
     }
 
     private function reconstructPath($previous, $endId)

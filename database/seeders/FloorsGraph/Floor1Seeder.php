@@ -67,7 +67,8 @@ class Floor1Seeder extends Seeder
             ['from_node_id' => 152, 'to_node_id' => 133, 'is_stairs' => 0],
             ['from_node_id' => 155, 'to_node_id' => 157, 'is_stairs' => 0],
             ['from_node_id' => 154, 'to_node_id' => 135, 'is_stairs' => 0],
-            ['from_node_id' => 135, 'to_node_id' => 155, 'is_stairs' => 0],
+            ['from_node_id' => 135, 'to_node_id' => 134, 'is_stairs' => 0],
+            ['from_node_id' => 134, 'to_node_id' => 155, 'is_stairs' => 0],
 
             // Tangga & Elevator
             ['from_node_id' => 154, 'to_node_id' => 140, 'is_stairs' => 0],

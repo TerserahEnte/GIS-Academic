@@ -129,42 +129,40 @@
                     <div class="w-full flex flex-col gap-3">
 
                         <p class="text-center text-2xl font-bold">Kelas yang Sedang Berlangsung</p>
+                        <p class="text-center text-sm text-zinc-600 font-medium -mt-1">Waktu Server: {{ $currentDay }}, {{ $currentTime }} WIB</p>
                         <hr class="mx-6 rounded-4xl border-t-4 border-black">
                         <div class="bg-gray-50 rounded-2xl mt-6">
                             <table class="w-full text-center border-collapse">
                                 <thead>
                                     <tr>
                                         <th class="text-xl font-bold text-black p-4 border-r-4 border-b-4 border-black">
-                                            Waktu</th>
+                                            Ruangan</th>
                                         <th class="text-xl font-bold text-black p-4 border-b-4 border-black">Jadwal</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="py-3 font-medium text-black border-r-4 border-black">R201
-                                        </td>
-                                        <td class="py-3 font-medium text-black">Pemrograman Web</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-3 font-medium text-black border-r-4 border-black">R211
-                                        </td>
-                                        <td class="py-3 font-medium text-black">Pemrograman Dasar</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-3 font-medium text-black border-r-4 border-black">R101
-                                        </td>
-                                        <td class="py-3 font-medium text-black">Matematika Diskrit</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-3 font-medium text-black border-r-4 border-black">R311
-                                        </td>
-                                        <td class="py-3 font-medium text-black">Micro Teaching</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-3 font-medium text-black border-r-4 border-black">R312
-                                        </td>
-                                        <td class="py-3 font-medium text-black">Pembelajaran Mikro</td>
-                                    </tr>
+                                    @if($ongoingClasses->isEmpty())
+                                        <tr>
+                                            <td colspan="2" class="py-8 px-4 text-center text-zinc-500 italic">
+                                                Tidak ada kelas yang sedang berlangsung saat ini.
+                                            </td>
+                                        </tr>
+                                    @else
+                                        @foreach($ongoingClasses as $class)
+                                            <tr class="border-b border-zinc-200 last:border-0">
+                                                <td class="py-4 px-2 font-semibold text-black border-r-4 border-black text-center whitespace-normal break-words">
+                                                    {{ $class->nama_ruangan }}
+                                                </td>
+                                                <td class="py-3 px-4 text-left text-black whitespace-normal break-words">
+                                                    <div class="font-bold text-base leading-tight">{{ $class->nama_matkul }}</div>
+                                                    <div class="text-xs text-zinc-600 mt-1 flex flex-col gap-0.5">
+                                                        <span>🕒 {{ $class->jam_mulai }} - {{ $class->jam_selesai }}</span>
+                                                        <span>👤 Dosen: {{ $class->nama_dosen }}</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
                                 </tbody>
                             </table>
                         </div>

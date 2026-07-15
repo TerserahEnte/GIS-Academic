@@ -1,0 +1,48 @@
+﻿Kode Mk,Nama Mk,Semester,Kelas,Hari,Jam Mulai,Jam Selesai,SKS,Ruangan,Node ID,Dosen 1,Dosen 2
+20P03109,Bahasa Inggris,1,E11-109,Kamis,13:00,14:40,2,Aula,1010,"Virgiawan Adi Kristianto, S.Pd., M.Ed.","Dr. Eko Supraptono, M.Pd."
+20P03121,Fisika,1,E6.245,Selasa,07:00,08:40,2,Ruangan 204,213,"Arimaz Hangga, S.T., M.T.","Febry Putra Rochim, S.T., M.Eng."
+20P03110,Kalkulus,1,E11-111,Jumat,15:00,17:30,3,Ruangan 304,313,"Prof. Dr. Djoko Adi Widodo, M.T.","Uswatun Hasanah, S.Kom., M.Eng."
+20P04143,Pemrograman I,1,E11-306 Lab Komputer,Rabu,13:00,15:30,3,Ruangan 404,413,"Budi Sunarko, S.T., M.T., Ph.D.","Anggraini Mulwinda, S.T., M.Eng."
+20P03116,Pengantar Teknologi Informasi,1,E11-210,Jumat,07:00,08:40,2,Ruangan 502,513,"Alfa Faridh Suni, S.T., M.T.","Putri Khoirin Nashiroh, S.Pd., M.Pd."
+20U00001,Pendidikan Agama Islam,1,Virtual,Selasa,13:00,14:40,2,Aula,1010,"Dr. Prabowo Yudo Jayanto, S.E., M.S.A.","Abdul Jabbar, S.Si., M.Ling."
+20U00008,Bahasa Indonesia,1,Virtual,Selasa,09:00,10:40,2,Aula,1010,"Dyah Prabaningrum ,",
+20U00022,Literasi Digital dan Kemanusiaan,1,Virtual,Rabu,09:00,10:40,2,Ruangan 601,610,"Dr. Kardiyem, S.Pd., M.Pd.",
+20P04144,Elektronika Dasar,1,E8-101 LAB. SISTIM DIGITAL,Kamis,15:00,17:30,3,Ruangan 704,713,"Dr. -Ing. Dhidik Prastiyanto, S.T., M.T.","Khoirudin Fathoni, S.T., M.T."
+20P03373,Manajemen Proyek Teknologi Informasi,2,E8-304,Selasa,07:00,09:30,3,Ruangan 802,811,"Dr. Agus Suryanto, M.T.","Dr. Feddy Setio Pribadi, S.Pd., M.T."
+20P04141,Media Pembelajaran Informatika,2,E11-209,Selasa,15:00,16:40,2,Ruangan 902,911,"Fitria Ekarini, S.Pd., M.Pd.","Riska Dami Ristanto, S.Pd., M.Pd."
+20P03337,Metode Numerik,2,E11-112,Kamis,11:00,13:30,3,Ruangan 204,213,"Prof. Dr. Ir. Subiyanto, S.T., M.T.","Uswatun Hasanah, S.Kom., M.Eng."
+20P03380,Organisasi dan Arsitektur Komputer,2,E11-112,Kamis,07:00,08:40,2,Ruangan 304,313,"Dr. Hari Wibawanto, M.T.","Dr. Nur Iksan, S.T., M.Kom."
+20P04146,Pemrograman Berorientasi Objek,2,E11-301 Lab. Komputer,Kamis,15:00,17:30,3,Ruangan 404,413,"Dr. Feddy Setio Pribadi, S.Pd., M.T.","Bagaskoro Saputro, S.Si., M.Cs."
+20P04145,Pemrograman Web,2,E11-207,Jumat,07:00,09:30,3,Ruangan 501,512,"Riska Dami Ristanto, S.Pd., M.Pd.","Febry Putra Rochim, S.T., M.Eng."
+20P03338,Sistem Basis Data,2,E11-207,Rabu,11:00,13:30,3,Ruangan 601,610,"Dr. Nur Iksan, S.T., M.Kom.","Ahmad Fashiha Hastawan, S.T., M.Eng."
+20U00013,Manajemen Sekolah,2,Aula Dekanat FIPP,Rabu,07:00,08:40,2,Aula,1010,"Sony Zulfikasari, S.Pd., M.Pd.",
+20U00012,Bimbingan dan Konseling,2,A1-101,Jumat,13:00,14:40,2,Ruangan 704,713,"Kusnarto Kurniawan, S.Pd., M.Pd., Kons.","Fathin Farah Fadhilah, S.Psi., M.Psi."
+20P03491,Evaluasi Pembelajaran,3,E6.245,Rabu,11:00,12:40,2,Ruangan 802,811,"Riska Dami Ristanto, S.Pd., M.Pd.","Fitria Ekarini, S.Pd., M.Pd."
+20P03488,Keamanan Sistem Informasi,3,E6.244,Rabu,13:00,14:40,2,Ruangan 902,911,"Arief Arfriandi, S.T., M.Eng.","Fitria Ekarini, S.Pd., M.Pd."
+20P03486,Kurikulum Pembelajaran Vokasi,3,E6.245,Kamis,07:00,08:40,2,Ruangan 204,213,"Dr. Ir. Ulfah Mediaty Arief, M.T.","Putri Khoirin Nashiroh, S.Pd., M.Pd."
+20F00028,Manajemen Pendidikan Kejuruan,3,E11-112,Jumat,17:00,18:40,2,Ruangan 302,311,"Dr. Ir. Ulfah Mediaty Arief, M.T.","Ajeng Rahma Sudarni, S.Pd., M.Pd.T."
+20P03492,Metodologi Penelitian,3,E8-304,Jumat,09:00,10:40,2,Ruangan 404,413,"Fitria Ekarini, S.Pd., M.Pd.","Ajeng Rahma Sudarni, S.Pd., M.Pd.T."
+20P03489,Pengolahan Citra Digital,3,E11-205,Selasa,11:00,13:30,3,Ruangan 502,513,"Budi Sunarko, S.T., M.T., Ph.D.","Dr. Hari Wibawanto, M.T."
+20P03487,Sistem Cerdas,3,E6.245,Rabu,15:00,17:30,3,Ruangan 601,610,"Prof. Dr. Ir. Subiyanto, S.T., M.T.","Budi Sunarko, S.T., M.T., Ph.D."
+20F00037,Technopreneurship,3,E6.245,Senin,08:00,09:40,2,Ruangan 704,713,"Dr. Ir. Ulfah Mediaty Arief, M.T.","Fitria Ekarini, S.Pd., M.Pd."
+20P04504,Pembelajaran Mikro,3,E11 - Lab Microteaching,Jumat,13:00,14:40,2,Ruangan 802,811,"Putri Khoirin Nashiroh, S.Pd., M.Pd.","Riska Dami Ristanto, S.Pd., M.Pd."
+20P04147,Manajemen Pendidikan dan Pelatihan,3,E8-304,Rabu,08:00,10:30,3,Ruangan 902,911,"Dr. Agus Suryanto, M.T.","Alfian Ardhiansyah, S.Pd., M.Pd."
+20P04226,Elektronika Digital,4,E8-101 LAB. SISTIM DIGITAL,Rabu,07:00,09:30,3,Ruangan 204,213,"Khoirudin Fathoni, S.T., M.T.","Syahroni Hidayat, S.T., M.Eng."
+20P03332,Interaksi Manusia dan Komputer,4,E11-109,Rabu,12:00,13:40,2,Ruangan 304,313,"Fitria Ekarini, S.Pd., M.Pd.","Riska Dami Ristanto, S.Pd., M.Pd."
+20P04224,Jaringan Komputer,4,E11-205,Jumat,07:00,09:30,3,Ruangan 403,412,"Putri Khoirin Nashiroh, S.Pd., M.Pd.","Riska Dami Ristanto, S.Pd., M.Pd."
+20P03325,Matematika Diskrit,4,E11-210,Kamis,07:00,09:30,3,Ruangan 502,513,"Budi Sunarko, S.T., M.T., Ph.D.","Uswatun Hasanah, S.Kom., M.Eng."
+20P04225,Pemrograman II,4,E11-307 Lab Komputer,Senin,09:00,11:30,3,Ruangan 601,610,"Budi Sunarko, S.T., M.T., Ph.D.","Febry Putra Rochim, S.T., M.Eng."
+20U00006,Pendidikan Pancasila,4,Virtual,Jumat,13:00,14:40,2,Aula,1010,"Prof. Dr. Masrukhi, M.Pd.","Ruhadi, S.Pd., M.Pd."
+20U00009,Pendidikan Konservasi,4,Virtual,Selasa,13:00,14:40,2,Ruangan 704,713,"Prof. Dr. Margareta Rahayuningsih, M.Si.",
+20U00010,Pengantar Ilmu Pendidikan,4,Virtual,Senin,15:00,16:40,2,Ruangan 802,811,"Drs.  Wardi, M.Pd.",
+20U00011,Psikologi Pendidikan,4,Virtual,Kamis,13:00,14:40,2,Ruangan 902,911,"Yogi Swaraswati, S.Psi., M.Si.",
+20P03479,Probabilitas dan Statistik,5,E11-209,Kamis,07:00,09:30,3,Ruangan 205,214,"Aryo Baskoro Utomo, S.T., M.T.","Uswatun Hasanah, S.Kom., M.Eng."
+20P03480,Rekayasa Perangkat Lunak,5,E11-209,Selasa,14:00,16:30,3,Ruangan 304,313,"Anggraini Mulwinda, S.T., M.Eng.","Fitria Ekarini, S.Pd., M.Pd."
+20P03484,Sistem Operasi,5,E11-210,Jumat,14:00,16:30,3,Ruangan 404,413,"Dr. Hari Wibawanto, M.T.","Arief Arfriandi, S.T., M.Eng."
+20P04131,Strategi Pembelajaran Informatika,5,E11-112,Selasa,11:00,13:30,3,Ruangan 501,512,"Dr. Sri Sukamta, M.Si.","Fitria Ekarini, S.Pd., M.Pd."
+20P04126,Teori Komputasi,5,E11-111,Rabu,07:00,09:30,3,Ruangan 603,612,"Dr. Djuniadi, M.T.","Syahroni Hidayat, S.T., M.Eng."
+20P04227,Manajemen Jaringan Komputer,5,E11-205,Rabu,13:00,15:30,3,Ruangan 704,713,"Dr. Nur Iksan, S.T., M.Kom.","Putri Khoirin Nashiroh, S.Pd., M.Pd."
+20P04129,Sistem Multimedia,5,Digital Center 3A,Kamis,13:00,15:30,3,Ruangan 802,811,"Dr. Agus Suryanto, M.T.","Fitria Ekarini, S.Pd., M.Pd."
+20U00007,Pendidikan Kewarganegaraan,5,Ruang Moh. Hatta-Aula Dekanat,Selasa,09:00,10:40,2,Ruangan 902,911,"Didi Pramono, S.Pd., M.Pd.",
+20X01099,Ethics and Social Aspects of Information Technology,6,E11-109,Selasa,07:00,08:40,2,Ruangan 205,214,"Dr. Sri Sukamta, M.Si.","Fitria Ekarini, S.Pd., M.Pd."
+20P04126,Teori Komputasi,6,E11-207,Rabu,10:00,12:30,3,Ruangan 302,311,"Dr. Djuniadi, M.T.","Syahroni Hidayat, S.T., M.Eng."

@@ -172,7 +172,7 @@
                 L.marker(midpoint, {
                     icon: L.divIcon({
                         className: 'edge-weight-label',
-                        html: `<span style="background:white;padding:2px;border:1px solid #ccc;font-size:10px;">
+                        html: `<span style="background:white;padding:2px;border:1px solid #ccc;font-size:16px;">
                     ${Math.round(edge.weight)}
                 </span>`,
                         iconSize: [30, 20]
@@ -196,7 +196,7 @@
                 L.marker([node.lat + 10, node.lng], { // Adjust lat to position below the node
                     icon: L.divIcon({
                         className: 'node-id-label', // Custom class for styling
-                        html: `<span style="background:white;color:red;padding:2px;border:1px solid #ccc;font-size:10px;">${node.id}</span>`,
+                        html: `<span style="background:white;color:red;padding:2px;border:1px solid #ccc;font-size:18px;">${node.id}</span>`,
                         iconSize: [30, 20], // Approximate size for the label
                         iconAnchor: [15,
                             0] // Anchor the top-center of the label to the marker's position
