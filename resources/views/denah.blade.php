@@ -75,6 +75,33 @@
                 <p class="text text-white">Copyright © 2025</p>
             </div>
         </footer>
+
+        <!-- Fancy Warning Modal -->
+        <div id="warning-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+            <!-- Backdrop -->
+            <div class="fixed inset-0 bg-black/55 backdrop-blur-sm transition-opacity duration-300"></div>
+            
+            <!-- Modal content card -->
+            <div class="relative bg-white rounded-2xl max-w-sm w-full mx-4 p-6 shadow-2xl border border-stone-200 transform scale-95 opacity-0 transition-all duration-300 ease-out select-none flex flex-col items-center text-center">
+                <!-- Icon -->
+                <div class="w-16 h-16 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mb-4">
+                    <svg class="w-8 h-8 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <path d="M256 0c14.7 0 28.2 8.1 35.2 21l216 400c6.7 12.4 6.4 27.4-.8 39.5S486.1 480 472 480L40 480c-14.1 0-27.2-7.4-34.4-19.5s-7.5-27.1-.8-39.5l216-400c7-12.9 20.5-21 35.2-21zm0 352a32 32 0 1 0 0 64 32 32 0 1 0 0-64zm0-192c-18.2 0-32.7 15.5-31.4 33.7l7.4 104c.9 12.5 11.4 22.3 23.9 22.3 12.6 0 23-9.7 23.9-22.3l7.4-104c1.3-18.2-13.1-33.7-31.4-33.7z"/>
+                    </svg>
+                </div>
+                
+                <!-- Message -->
+                <h3 class="text-xl font-extrabold text-stone-900 mb-2">Informasi Tidak Tersedia</h3>
+                <p id="warning-modal-message" class="text-sm text-stone-600 leading-relaxed mb-6">
+                    Ruangan tidak ditemukan atau tidak memiliki data jadwal.
+                </p>
+                
+                <!-- Button -->
+                <button id="close-warning-modal-btn" class="w-full py-3 px-6 bg-stone-800 hover:bg-stone-700 active:bg-stone-900 text-white font-bold rounded-xl transition duration-200 shadow-md">
+                    Mengerti
+                </button>
+            </div>
+        </div>
     </div>
 
 
@@ -143,6 +170,7 @@
             initCoordinatesShow();
             initFloorButtons();
             initNextFloorButton();
+            initInfoRuanganButton();
             //drawGrid(10);
 
             // =========================
@@ -428,6 +456,69 @@
                 ], gridStyle).addTo(map);
             }
         }
+
+        function initInfoRuanganButton() {
+            const infoBtn = document.getElementById('jadwal-btn');
+            if (infoBtn) {
+                infoBtn.addEventListener('click', () => {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const end = urlParams.get('end');
+                    if (end) {
+                        window.location.href = `/ruangan?id_node=${end}`;
+                    } else {
+                        showWarningModal('Silakan tentukan Lokasi Tujuan terlebih dahulu.');
+                    }
+                });
+            }
+        }
+
+        // ======================================================
+        // WARNING MODAL SYSTEM
+        // ======================================================
+        function showWarningModal(message) {
+            const modal = document.getElementById('warning-modal');
+            const msgEl = document.getElementById('warning-modal-message');
+            const card = modal.querySelector('.relative');
+            
+            if (message) {
+                msgEl.textContent = message;
+            }
+            
+            modal.classList.remove('hidden');
+            
+            setTimeout(() => {
+                card.classList.remove('scale-95', 'opacity-0');
+                card.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeWarningModal() {
+            const modal = document.getElementById('warning-modal');
+            const card = modal.querySelector('.relative');
+            
+            card.classList.remove('scale-100', 'opacity-100');
+            card.classList.add('scale-95', 'opacity-0');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 200);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const closeBtn = document.getElementById('close-warning-modal-btn');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', closeWarningModal);
+            }
+            
+            // Close modal when clicking on background backdrop
+            const modal = document.getElementById('warning-modal');
+            if (modal) {
+                const backdrop = modal.querySelector('.fixed.inset-0');
+                if (backdrop) {
+                    backdrop.addEventListener('click', closeWarningModal);
+                }
+            }
+        });
     </script>
 </body>
 

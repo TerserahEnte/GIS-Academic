@@ -111,12 +111,15 @@
 
                         <div class="px-4 py-4">
                             <label class="font-bold text-left" for="nodeSearch">Cari tempat atau Dosen:</label>
-                            <input
+                            <input list="nodeSearchList"
                                 class="bg-white rounded-4xl w-full mt-2 py-3 px-6 shadow-sm focus:outline-none focus:ring-2 focus:ring-stone-500"
                                 type="text" name="nodeSearch" id="nodeSearch" placeholder="Ketik Disini...">
+                            <datalist id="nodeSearchList">
+                                <!-- List data ruangan dan dosen akan dimuat via JS -->
+                            </datalist>
                         </div>
 
-                        <button class="w-full max-w-md mx-auto rounded-4xl bg-stone-700 text-white py-3">Lihat
+                        <button id="lihat-jadwal-btn" class="w-full max-w-md mx-auto rounded-4xl bg-stone-700 text-white py-3">Lihat
                             Jadwal</button>
 
                     </div>
@@ -128,7 +131,7 @@
 
                     <div class="w-full flex flex-col gap-3">
 
-                        <p class="text-center text-2xl font-bold">Kelas yang Sedang Berlangsung</p>
+                        <p class="text-center text-2xl font-bold">Jadwal Hari Ini</p>
                         <p class="text-center text-sm text-zinc-600 font-medium -mt-1">Waktu Server: {{ $currentDay }}, {{ $currentTime }} WIB</p>
                         <hr class="mx-6 rounded-4xl border-t-4 border-black">
                         <div class="bg-gray-50 rounded-2xl mt-6">
@@ -144,7 +147,7 @@
                                     @if($ongoingClasses->isEmpty())
                                         <tr>
                                             <td colspan="2" class="py-8 px-4 text-center text-zinc-500 italic">
-                                                Tidak ada kelas yang sedang berlangsung saat ini.
+                                                Tidak ada kelas terjadwal hari ini.
                                             </td>
                                         </tr>
                                     @else
@@ -180,10 +183,43 @@
                 <p class="text text-white">Copyright © 2025</p>
             </div>
         </footer>
+
+        <!-- Fancy Warning Modal -->
+        <div id="warning-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+            <!-- Backdrop -->
+            <div class="fixed inset-0 bg-black/55 backdrop-blur-sm transition-opacity duration-300"></div>
+            
+            <!-- Modal content card -->
+            <div class="relative bg-white rounded-2xl max-w-sm w-full mx-4 p-6 shadow-2xl border border-stone-200 transform scale-95 opacity-0 transition-all duration-300 ease-out select-none flex flex-col items-center text-center">
+                <!-- Icon -->
+                <div class="w-16 h-16 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mb-4">
+                    <svg class="w-8 h-8 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <path d="M256 0c14.7 0 28.2 8.1 35.2 21l216 400c6.7 12.4 6.4 27.4-.8 39.5S486.1 480 472 480L40 480c-14.1 0-27.2-7.4-34.4-19.5s-7.5-27.1-.8-39.5l216-400c7-12.9 20.5-21 35.2-21zm0 352a32 32 0 1 0 0 64 32 32 0 1 0 0-64zm0-192c-18.2 0-32.7 15.5-31.4 33.7l7.4 104c.9 12.5 11.4 22.3 23.9 22.3 12.6 0 23-9.7 23.9-22.3l7.4-104c1.3-18.2-13.1-33.7-31.4-33.7z"/>
+                    </svg>
+                </div>
+                
+                <!-- Message -->
+                <h3 class="text-xl font-extrabold text-stone-900 mb-2">Informasi Tidak Tersedia</h3>
+                <p id="warning-modal-message" class="text-sm text-stone-600 leading-relaxed mb-6">
+                    Ruangan tidak ditemukan atau tidak memiliki data jadwal.
+                </p>
+                
+                <!-- Button -->
+                <button id="close-warning-modal-btn" class="w-full py-3 px-6 bg-stone-800 hover:bg-stone-700 active:bg-stone-900 text-white font-bold rounded-xl transition duration-200 shadow-md">
+                    Mengerti
+                </button>
+            </div>
+        </div>
     </div>
 
 
     <script>
+        @if(session('warning'))
+            document.addEventListener('DOMContentLoaded', () => {
+                showWarningModal("{{ session('warning') }}");
+            });
+        @endif
+
         let nodesData = []; // Variabel global untuk menyimpan data node
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -191,6 +227,8 @@
             fetchNodes();
             initNavigationSubmit();
             initScanner();
+            fetchSearchOptions();
+            initScheduleSearchSubmit();
         });
 
         // ======================================================
@@ -405,6 +443,113 @@
                 }
             }
         }
+
+        // ======================================================
+        // SEARCH OPTIONS (ROOMS & LECTURERS)
+        // ======================================================
+        function fetchSearchOptions() {
+            fetch('/api/search-options')
+                .then(response => response.json())
+                .then(data => {
+                    const searchList = document.getElementById('nodeSearchList');
+                    if (!searchList) return;
+
+                    window.roomsList = data.rooms;
+                    window.lecturersList = data.lecturers;
+
+                    // Add rooms
+                    data.rooms.forEach(room => {
+                        const option = document.createElement('option');
+                        option.value = room.nama_ruangan;
+                        searchList.appendChild(option);
+                    });
+
+                    // Add lecturers
+                    data.lecturers.forEach(lecturer => {
+                        const option = document.createElement('option');
+                        option.value = lecturer.nama_dosen;
+                        searchList.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Gagal mengambil opsi pencarian:', error));
+        }
+
+        function initScheduleSearchSubmit() {
+            const submitBtn = document.getElementById('lihat-jadwal-btn');
+            if (submitBtn) {
+                submitBtn.addEventListener('click', () => {
+                    const searchVal = document.getElementById('nodeSearch').value.trim();
+                    if (!searchVal) {
+                        alert('Silakan masukkan nama ruangan atau dosen terlebih dahulu.');
+                        return;
+                    }
+
+                    // Look up in rooms first
+                    const matchedRoom = window.roomsList ? window.roomsList.find(r => r.nama_ruangan === searchVal) : null;
+                    if (matchedRoom) {
+                        window.location.href = `/ruangan?kode_ruangan=${matchedRoom.kode_ruangan}`;
+                        return;
+                    }
+
+                    // Look up in lecturers
+                    const matchedLecturer = window.lecturersList ? window.lecturersList.find(l => l.nama_dosen === searchVal) : null;
+                    if (matchedLecturer) {
+                        window.location.href = `/ruangan?kode_dosen=${matchedLecturer.kode_dosen}`;
+                        return;
+                    }
+
+                    showWarningModal('Ruangan atau Dosen tidak ditemukan. Silakan pilih dari daftar.');
+                });
+            }
+        }
+
+        // ======================================================
+        // WARNING MODAL SYSTEM
+        // ======================================================
+        function showWarningModal(message) {
+            const modal = document.getElementById('warning-modal');
+            const msgEl = document.getElementById('warning-modal-message');
+            const card = modal.querySelector('.relative');
+            
+            if (message) {
+                msgEl.textContent = message;
+            }
+            
+            modal.classList.remove('hidden');
+            
+            setTimeout(() => {
+                card.classList.remove('scale-95', 'opacity-0');
+                card.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeWarningModal() {
+            const modal = document.getElementById('warning-modal');
+            const card = modal.querySelector('.relative');
+            
+            card.classList.remove('scale-100', 'opacity-100');
+            card.classList.add('scale-95', 'opacity-0');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 200);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const closeBtn = document.getElementById('close-warning-modal-btn');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', closeWarningModal);
+            }
+            
+            // Close modal when clicking on background backdrop
+            const modal = document.getElementById('warning-modal');
+            if (modal) {
+                const backdrop = modal.querySelector('.fixed.inset-0');
+                if (backdrop) {
+                    backdrop.addEventListener('click', closeWarningModal);
+                }
+            }
+        });
     </script>
 </body>
 
