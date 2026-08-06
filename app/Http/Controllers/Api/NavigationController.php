@@ -45,10 +45,11 @@ class NavigationController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Path not found.',
+                'id_path' => '',
                 'path' => [],
                 'distance' => null,
                 'execution_time' => $result['execution_time'],
-            ]);
+            ], 200, [], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         }
 
         // Ambil data node sesuai urutan path
@@ -63,8 +64,9 @@ class NavigationController extends Controller
             'total_nodes' => count($pathIds),
             'distance' => $result['distance'],
             'execution_time' => round($result['execution_time'] * 1000, 3), // ms
+            'id_path' => implode(' -> ', $pathIds),
             'path' => $nodes,
-        ]);
+        ], 200, [], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 
     // In your NavigationController.php

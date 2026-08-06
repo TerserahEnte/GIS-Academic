@@ -38,7 +38,7 @@
                 @if(!isset($dosen) || !$dosen)
                 <!-- Foto card -->
                 <div id="ruanganFoto-card"
-                    class="w-full max-w-lg mx-auto rounded-xl px-4 py-6 my-10 bg-gray-200 shadow-lg">
+                    class="w-full max-w-md mx-auto rounded-xl px-4 py-6 my-10 bg-gray-200 shadow-lg">
 
                     <div class="w-full flex flex-col gap-3">
                         <p class="text-center text-2xl font-bold">Foto</p>
@@ -65,7 +65,7 @@
 
                 <!-- Jadwal card -->
                 <div id="ruanganJadwal-card"
-                    class="w-full max-w-lg mx-auto rounded-xl px-4 py-6 my-10 bg-gray-200 shadow-lg">
+                    class="w-full max-w-md mx-auto rounded-xl px-4 py-6 my-10 bg-gray-200 shadow-lg">
 
                     <div class="w-full flex flex-col gap-3">
                         <p class="text-center text-2xl font-bold">Jadwal</p>
@@ -131,7 +131,7 @@
                 @if(!isset($dosen) || !$dosen)
                 <!-- Peta Card -->
                 <div id="ruanganPeta-card"
-                    class="w-full max-w-lg mx-auto rounded-xl px-4 py-6 my-10 bg-gray-200 shadow-lg">
+                    class="w-full max-w-md mx-auto rounded-xl px-4 py-6 my-10 bg-gray-200 shadow-lg">
 
                     <div class="w-full flex flex-col gap-3">
                         <p class="text-center text-2xl font-bold">Peta</p>

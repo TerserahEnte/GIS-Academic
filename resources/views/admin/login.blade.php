@@ -13,167 +13,62 @@
 <body>
     <div class="flex flex-col min-h-screen">
         <header class="shadow-lg">
-            <div
+            {{-- <div
                 class="flex items-center justify-center px-5 py-2 mx-auto w-auto bg-gray-50 shadow-sm sticky top-0 z-10 ">
                 <img src="https://placehold.co/200x50">
-            </div>
+            </div> --}}
         </header>
         <main class="py-10 grow">
-            <hero>
+            {{-- <hero>
                 <div class="flex items-center text-center justify-center mx-auto px-4 ">
                     <div class="grid grid-cols-1 gap-2">
-                        <h1 class="col-span-1 col-start-1 text text-4xl font-bold">Gedung Simulasi</h1>
-                        <p>Pilih menu apa yang akan ditampilkan.</p>
+                        <h1 class="col-span-1 col-start-1 text text-4xl font-bold">LOGIN</h1>
                         <hr>
                     </div>
                 </div>
-            </hero>
+            </hero> --}}
 
             <content>
-                <!-- Button Menu -->
-                <div id="menu-card" class="w-full max-w-md mx-auto rounded-xl py-3">
-                    <div id="menu-btn" class="grid grid-cols-2 gap-3">
-                        <button id="denah-btn" class="rounded-4xl bg-stone-700 text-white py-2 font-bold">Denah</button>
-                        <button id="jadwal-btn"
-                            class="rounded-4xl bg-white py-2 border-2 border-stone-700">Jadwal</button>
-                    </div>
-                </div>
-
-                <!-- Denah Menu -->
-                <div id="denah-card" class="w-full max-w-md mx-auto rounded-xl px-4 py-6 my-10 bg-gray-200 shadow-lg">
-
-                    <div class="w-full flex flex-col gap-3">
-                        <p class="text-center text-2xl font-bold">Denah</p>
-                        <p class="text-justify leading-5 tracking-tight">
-                            Scan QR Code untuk mengetahui titik awal atau bisa memilih titik awal dari posisi untuk
-                            menampilkan posisi anda di denah.
-                        </p>
-
-                        <p class="text-center pt-2">Tentukan lokasi awal dan tujuan Anda</p>
-                        <div class="px-4">
-                            <label class="font-bold text-left" for="endNodeSearch">Lokasi Tujuan (Cari
-                                Ruangan/Dosen):</label>
-                            <input list="endNodeList"
-                                class="bg-white rounded-4xl w-full mt-2 py-3 px-6 shadow-sm focus:outline-none focus:ring-2 focus:ring-stone-500"
-                                type="text" name="endNodeSearch" id="endNodeSearch"
-                                placeholder="Pilih lokasi tujuan di sini...">
-                            <datalist id="endNodeList">
-                                <!-- List data node akan dimuat melalui JavaScript -->
-                            </datalist>
+                <div id="login-card"
+                    class="min-h-screen flex items-center justify-center w-full max-w-xl mx-auto rounded-xl px-4 py-6 my-10 ">
+                    <div class="w-full flex flex-col gap-3 bg-gray-200 shadow-lg rounded-xl p-6">
+                        <div class="grid grid-cols-1 justify-center items-center text-center gap-2">
+                            <h1 class="col-span-1 col-start-1 text text-4xl font-bold">LOGIN</h1>
+                            <hr>
                         </div>
 
-                        <!-- Scannner QR Code -->
-                        <button id="openScannerBtn"
-                            class="bg-white rounded-2xl w-max self-center mt-2 py-1.5 px-6 hover:border-2 hover:border-stone-700">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 448 512"><!--!Font Awesome Free v7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.-->
-                                <path
-                                    d="M64 160l64 0 0-64-64 0 0 64zM0 80C0 53.5 21.5 32 48 32l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48L0 80zM64 416l64 0 0-64-64 0 0 64zM0 336c0-26.5 21.5-48 48-48l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48l0-96zM320 96l0 64 64 0 0-64-64 0zM304 32l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48l0-96c0-26.5 21.5-48 48-48zM288 352a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm0 64c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32zm96 32c0-17.7 14.3-32 32-32s32 14.3 32 32-14.3 32-32 32-32-14.3-32-32zm32-96a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm-32 32a32 32 0 1 1 -64 0 32 32 0 1 1 64 0z" />
-                            </svg>
-                            Scan QR
-                        </button>
-                        <div id="scannerContainer"
-                            class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50">
-
-                            <div class="bg-white p-4 rounded-xl w-80">
-                                <div id="reader"></div>
-
-                                <button id="closeScannerBtn" class="mt-4 w-full bg-red-500 text-white py-2 rounded-xl">
-                                    Tutup Scanner
-                                </button>
+                        @if ($errors->any())
+                            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl text-sm font-semibold mb-2">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
                             </div>
-                        </div>
+                        @endif
 
-                        <!-- Lokasi Awal -->
-                        <div class="grid grid-cols-2 bg-white rounded-4xl px-4 py-2">
-                            <label>Lokasi Awal:</label>
-                            <select id="startNodeSelect" class="bg-transparent focus:outline-none">
-                                <option value="" disabled selected>Pilih lokasi awal...</option>
-                            </select>
-                        </div>
+                        <form action="{{ route('login.submit') }}" method="POST">
+                            @csrf
+                            <div class="w-full grid grid-cols-1 font-bold p-2 gap-3">
+                                <div class="grid grid-cols-1 gap-3">
+                                    <label for="username">Username / Email:</label>
+                                    <input type="text" placeholder="Ketik Disini..." name="username" value="{{ old('username') }}" required
+                                        class="bg-white rounded-4xl p-3">
+                                </div>
 
-                        <button id="submit-navigation"
-                            class="w-full max-w-md mx-auto rounded-4xl bg-stone-700 text-white py-3">Lihat
-                            Denah</button>
+                                <div class="grid grid-cols-1 gap-3">
+                                    <label for="password">Password:</label>
+                                    <input type="password" placeholder="Ketik Disini..." name="password" required
+                                        class="bg-white rounded-4xl p-3">
+                                </div>
 
+
+                                <button type="submit"
+                                    class="bg-zinc-700 text-white py-4 mt-4 rounded-4xl cursor-pointer hover:bg-zinc-800 transition duration-200">Login</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-
-                <!-- Jadwal Menu -->
-                <div id="jadwal-card"
-                    class="hidden w-full max-w-md mx-auto rounded-xl px-4 py-6 my-10 bg-gray-200 shadow-lg">
-
-                    <div class="w-full flex flex-col gap-3">
-                        <p class="text-center text-2xl font-bold">Jadwal</p>
-                        <p class="text-center leading-5 tracking-tight">
-                            Lihat jadwal rungan, jadwal mengajar dosen, dan informasi ruangan di gedung.
-                        </p>
-
-                        <div class="px-4 py-4">
-                            <label class="font-bold text-left" for="nodeSearch">Cari tempat atau Dosen:</label>
-                            <input list="nodeSearchList"
-                                class="bg-white rounded-4xl w-full mt-2 py-3 px-6 shadow-sm focus:outline-none focus:ring-2 focus:ring-stone-500"
-                                type="text" name="nodeSearch" id="nodeSearch" placeholder="Ketik Disini...">
-                            <datalist id="nodeSearchList">
-                                <!-- List data ruangan dan dosen akan dimuat via JS -->
-                            </datalist>
-                        </div>
-
-                        <button id="lihat-jadwal-btn" class="w-full max-w-md mx-auto rounded-4xl bg-stone-700 text-white py-3">Lihat
-                            Jadwal</button>
-
-                    </div>
-                </div>
-
-                <!-- Kelas Menu -->
-                <div id="kelas-card"
-                    class="hidden w-full max-w-md mx-auto rounded-xl px-4 py-6 my-10 bg-gray-200 shadow-lg">
-
-                    <div class="w-full flex flex-col gap-3">
-
-                        <p class="text-center text-2xl font-bold">Jadwal Hari Ini</p>
-                        <p class="text-center text-sm text-zinc-600 font-medium -mt-1">Waktu Server: {{ $currentDay }}, {{ $currentTime }} WIB</p>
-                        <hr class="mx-6 rounded-4xl border-t-4 border-black">
-                        <div class="bg-gray-50 rounded-2xl mt-6">
-                            <table class="w-full text-center border-collapse">
-                                <thead>
-                                    <tr>
-                                        <th class="text-xl font-bold text-black p-4 border-r-4 border-b-4 border-black">
-                                            Ruangan</th>
-                                        <th class="text-xl font-bold text-black p-4 border-b-4 border-black">Jadwal</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if($ongoingClasses->isEmpty())
-                                        <tr>
-                                            <td colspan="2" class="py-8 px-4 text-center text-zinc-500 italic">
-                                                Tidak ada kelas terjadwal hari ini.
-                                            </td>
-                                        </tr>
-                                    @else
-                                        @foreach($ongoingClasses as $class)
-                                            <tr class="border-b border-zinc-200 last:border-0">
-                                                <td class="py-4 px-2 font-semibold text-black border-r-4 border-black text-center whitespace-normal break-words">
-                                                    {{ $class->nama_ruangan }}
-                                                </td>
-                                                <td class="py-3 px-4 text-left text-black whitespace-normal break-words">
-                                                    <div class="font-bold text-base leading-tight">{{ $class->nama_matkul }}</div>
-                                                    <div class="text-xs text-zinc-600 mt-1 flex flex-col gap-0.5">
-                                                        <span>🕒 {{ $class->jam_mulai }} - {{ $class->jam_selesai }}</span>
-                                                        <span>👤 Dosen: {{ $class->nama_dosen }}</span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    @endif
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </div>
-                </div>
-
-
 
             </content>
         </main>
@@ -188,24 +83,27 @@
         <div id="warning-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
             <!-- Backdrop -->
             <div class="fixed inset-0 bg-black/55 backdrop-blur-sm transition-opacity duration-300"></div>
-            
+
             <!-- Modal content card -->
-            <div class="relative bg-white rounded-2xl max-w-sm w-full mx-4 p-6 shadow-2xl border border-stone-200 transform scale-95 opacity-0 transition-all duration-300 ease-out select-none flex flex-col items-center text-center">
+            <div
+                class="relative bg-white rounded-2xl max-w-sm w-full mx-4 p-6 shadow-2xl border border-stone-200 transform scale-95 opacity-0 transition-all duration-300 ease-out select-none flex flex-col items-center text-center">
                 <!-- Icon -->
                 <div class="w-16 h-16 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mb-4">
                     <svg class="w-8 h-8 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                        <path d="M256 0c14.7 0 28.2 8.1 35.2 21l216 400c6.7 12.4 6.4 27.4-.8 39.5S486.1 480 472 480L40 480c-14.1 0-27.2-7.4-34.4-19.5s-7.5-27.1-.8-39.5l216-400c7-12.9 20.5-21 35.2-21zm0 352a32 32 0 1 0 0 64 32 32 0 1 0 0-64zm0-192c-18.2 0-32.7 15.5-31.4 33.7l7.4 104c.9 12.5 11.4 22.3 23.9 22.3 12.6 0 23-9.7 23.9-22.3l7.4-104c1.3-18.2-13.1-33.7-31.4-33.7z"/>
+                        <path
+                            d="M256 0c14.7 0 28.2 8.1 35.2 21l216 400c6.7 12.4 6.4 27.4-.8 39.5S486.1 480 472 480L40 480c-14.1 0-27.2-7.4-34.4-19.5s-7.5-27.1-.8-39.5l216-400c7-12.9 20.5-21 35.2-21zm0 352a32 32 0 1 0 0 64 32 32 0 1 0 0-64zm0-192c-18.2 0-32.7 15.5-31.4 33.7l7.4 104c.9 12.5 11.4 22.3 23.9 22.3 12.6 0 23-9.7 23.9-22.3l7.4-104c1.3-18.2-13.1-33.7-31.4-33.7z" />
                     </svg>
                 </div>
-                
+
                 <!-- Message -->
                 <h3 class="text-xl font-extrabold text-stone-900 mb-2">Informasi Tidak Tersedia</h3>
                 <p id="warning-modal-message" class="text-sm text-stone-600 leading-relaxed mb-6">
                     Ruangan tidak ditemukan atau tidak memiliki data jadwal.
                 </p>
-                
+
                 <!-- Button -->
-                <button id="close-warning-modal-btn" class="w-full py-3 px-6 bg-stone-800 hover:bg-stone-700 active:bg-stone-900 text-white font-bold rounded-xl transition duration-200 shadow-md">
+                <button id="close-warning-modal-btn"
+                    class="w-full py-3 px-6 bg-stone-800 hover:bg-stone-700 active:bg-stone-900 text-white font-bold rounded-xl transition duration-200 shadow-md">
                     Mengerti
                 </button>
             </div>
@@ -214,7 +112,7 @@
 
 
     <script>
-        @if(session('warning'))
+        @if (session('warning'))
             document.addEventListener('DOMContentLoaded', () => {
                 showWarningModal("{{ session('warning') }}");
             });
@@ -485,14 +383,16 @@
                     }
 
                     // Look up in rooms first
-                    const matchedRoom = window.roomsList ? window.roomsList.find(r => r.nama_ruangan === searchVal) : null;
+                    const matchedRoom = window.roomsList ? window.roomsList.find(r => r.nama_ruangan ===
+                        searchVal) : null;
                     if (matchedRoom) {
                         window.location.href = `/ruangan?kode_ruangan=${matchedRoom.kode_ruangan}`;
                         return;
                     }
 
                     // Look up in lecturers
-                    const matchedLecturer = window.lecturersList ? window.lecturersList.find(l => l.nama_dosen === searchVal) : null;
+                    const matchedLecturer = window.lecturersList ? window.lecturersList.find(l => l.nama_dosen ===
+                        searchVal) : null;
                     if (matchedLecturer) {
                         window.location.href = `/ruangan?kode_dosen=${matchedLecturer.kode_dosen}`;
                         return;
@@ -510,13 +410,13 @@
             const modal = document.getElementById('warning-modal');
             const msgEl = document.getElementById('warning-modal-message');
             const card = modal.querySelector('.relative');
-            
+
             if (message) {
                 msgEl.textContent = message;
             }
-            
+
             modal.classList.remove('hidden');
-            
+
             setTimeout(() => {
                 card.classList.remove('scale-95', 'opacity-0');
                 card.classList.add('scale-100', 'opacity-100');
@@ -526,10 +426,10 @@
         function closeWarningModal() {
             const modal = document.getElementById('warning-modal');
             const card = modal.querySelector('.relative');
-            
+
             card.classList.remove('scale-100', 'opacity-100');
             card.classList.add('scale-95', 'opacity-0');
-            
+
             setTimeout(() => {
                 modal.classList.add('hidden');
             }, 200);
@@ -540,7 +440,7 @@
             if (closeBtn) {
                 closeBtn.addEventListener('click', closeWarningModal);
             }
-            
+
             // Close modal when clicking on background backdrop
             const modal = document.getElementById('warning-modal');
             if (modal) {

@@ -30,8 +30,35 @@
             </hero>
 
             <content>
-                <div id="map" style="height: 700px;" class="w-full h-64 rounded-lg"></div>
-                <div class="mt-5 p-2 bg-stone-300">
+                <div id="map" style="height: 1000px;" class="w-full h-64 rounded-lg"></div>
+
+                <!-- Layer Toggles -->
+                <div class="mt-4 p-4 bg-stone-100 rounded-2xl shadow-sm border border-stone-200 flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex items-center gap-2 font-bold text-stone-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-stone-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span>Tampilan Graph:</span>
+                    </div>
+                    <div class="flex items-center gap-6">
+                        <!-- Toggle ID Node -->
+                        <label class="relative inline-flex items-center cursor-pointer select-none">
+                            <input type="checkbox" id="toggle-node-id" checked class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-stone-700"></div>
+                            <span class="ml-3 text-sm font-bold text-stone-700">ID Node</span>
+                        </label>
+
+                        <!-- Toggle Bobot Edge -->
+                        <label class="relative inline-flex items-center cursor-pointer select-none">
+                            <input type="checkbox" id="toggle-edge-weight" checked class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-stone-700"></div>
+                            <span class="ml-3 text-sm font-bold text-stone-700">Bobot Edge</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="mt-4 p-2 bg-stone-300">
                     <div id="floor-btn" class="grid grid-cols-5 gap-3 w-full">
                         <button class="rounded-4xl bg-stone-700 text-white py-2 font-bold">L1</button>
                         <button class="rounded-4xl bg-white py-2 font-bold">L2</button>
@@ -59,7 +86,7 @@
 
     <script>
         let map;
-        let nodeLayer, edgeLayer, weightLayer;
+        let nodeLayer, nodeIdLayer, edgeLayer, weightLayer;
         let image;
         let imageUrls = {};
         let bounds;
@@ -96,6 +123,7 @@
 
             // Init Layers
             nodeLayer = L.layerGroup().addTo(map);
+            nodeIdLayer = L.layerGroup().addTo(map);
             edgeLayer = L.layerGroup().addTo(map);
             weightLayer = L.layerGroup().addTo(map);
 
@@ -103,6 +131,7 @@
             initCoordinatesShow();
             visualizeGraph(1);
             initFloorButtons();
+            initLayerToggles();
             drawGrid(10);
         });
 
@@ -140,6 +169,32 @@
         }
 
 
+        // Layer Toggles
+        function initLayerToggles() {
+            const toggleNodeId = document.getElementById('toggle-node-id');
+            const toggleEdgeWeight = document.getElementById('toggle-edge-weight');
+
+            if (toggleNodeId) {
+                toggleNodeId.addEventListener('change', function() {
+                    if (this.checked) {
+                        map.addLayer(nodeIdLayer);
+                    } else {
+                        map.removeLayer(nodeIdLayer);
+                    }
+                });
+            }
+
+            if (toggleEdgeWeight) {
+                toggleEdgeWeight.addEventListener('change', function() {
+                    if (this.checked) {
+                        map.addLayer(weightLayer);
+                    } else {
+                        map.removeLayer(weightLayer);
+                    }
+                });
+            }
+        }
+
 
         // Graph Visual
         async function visualizeGraph(floor) {
@@ -148,6 +203,7 @@
             const data = await response.json();
 
             nodeLayer.clearLayers();
+            nodeIdLayer.clearLayers();
             edgeLayer.clearLayers();
             weightLayer.clearLayers();
 
@@ -172,7 +228,7 @@
                 L.marker(midpoint, {
                     icon: L.divIcon({
                         className: 'edge-weight-label',
-                        html: `<span style="background:white;padding:2px;border:1px solid #ccc;font-size:16px;">
+                        html: `<span class="opacity-70" style="background:white;padding:2px;border:1px solid #ccc;font-size:16px;">
                     ${Math.round(edge.weight)}
                 </span>`,
                         iconSize: [30, 20]
@@ -183,8 +239,20 @@
 
             // NODES
             data.nodes.forEach(node => {
+                // Node ID label
+                L.marker([node.lat + 10, node.lng], { // Adjust lat to position below the node
+                    icon: L.divIcon({
+                        className: 'node-id-label', // Custom class for styling
+                        html: `<span style="background:#ffffff50;color:blue;padding:2px;padding-left:30px;padding-top:30px;border:1px solid #ccc;font-size:18px;">${node.id}</span>`,
+                        iconSize: [30, 20], // Approximate size for the label
+                        iconAnchor: [15,
+                            0] // Anchor the top-center of the label to the marker's position
+                    }),
+                    interactive: false
+                }).addTo(nodeIdLayer);
+
                 L.circleMarker([node.lat, node.lng], {
-                        radius: 5,
+                        radius: 15,
                         color: 'black',
                         fillColor: 'yellow',
                         fillOpacity: 1
@@ -192,17 +260,7 @@
                     .bindTooltip(`ID: ${node.id} - ${node.name}`)
                     .addTo(nodeLayer);
 
-                // Node ID label
-                L.marker([node.lat + 10, node.lng], { // Adjust lat to position below the node
-                    icon: L.divIcon({
-                        className: 'node-id-label', // Custom class for styling
-                        html: `<span style="background:white;color:red;padding:2px;border:1px solid #ccc;font-size:18px;">${node.id}</span>`,
-                        iconSize: [30, 20], // Approximate size for the label
-                        iconAnchor: [15,
-                            0] // Anchor the top-center of the label to the marker's position
-                    }),
-                    interactive: false
-                }).addTo(nodeLayer);
+
             });
         }
 

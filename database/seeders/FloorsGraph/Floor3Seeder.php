@@ -34,13 +34,13 @@ class Floor3Seeder extends Seeder
             ['id' => 336, 'name' => 'Persimpangan Depan Ruangan 304', 'floor' => 3, 'lat' => 196, 'lng' => 1091],
             ['id' => 337, 'name' => 'Persimpangan Depan Ruangan 305', 'floor' => 3, 'lat' => 196, 'lng' => 539],
             ['id' => 338, 'name' => 'Persimpangan Depan Ruangan 306', 'floor' => 3, 'lat' => 196, 'lng' => 453],
-            ['id' => 339, 'name' => 'Persimpangan Depan Tangga Turun', 'floor' => 3, 'lat' => 512, 'lng' => 1815],
-            ['id' => 340, 'name' => 'Persimpangan Depan Tangga Naik', 'floor' => 3, 'lat' => 512, 'lng' => 1723],
+            ['id' => 339, 'name' => 'Persimpangan Depan Tangga Naik', 'floor' => 3, 'lat' => 512, 'lng' => 1815],
+            ['id' => 340, 'name' => 'Persimpangan Depan Tangga Turun', 'floor' => 3, 'lat' => 512, 'lng' => 1723],
 
             // Stairs & Elevator
             ['id' => 341, 'name' => 'Elevator', 'floor' => 3, 'lat' => 759, 'lng' => 126],
-            ['id' => 342, 'name' => 'Tangga Turun', 'floor' => 3, 'lat' => 554, 'lng' => 1815],
-            ['id' => 343, 'name' => 'Tangga Naik', 'floor' => 3, 'lat' => 554, 'lng' => 1723],
+            ['id' => 342, 'name' => 'Tangga Naik', 'floor' => 3, 'lat' => 554, 'lng' => 1815],
+            ['id' => 343, 'name' => 'Tangga Turun', 'floor' => 3, 'lat' => 554, 'lng' => 1723],
 
             // Corridors
             ['id' => 350, 'name' => 'Depan Toilet', 'floor' => 3, 'lat' => 612, 'lng' => 423],
@@ -68,12 +68,12 @@ class Floor3Seeder extends Seeder
             ['from_node_id' => 356, 'to_node_id' => 357, 'is_stairs' => 0],
             ['from_node_id' => 334, 'to_node_id' => 357, 'is_stairs' => 0],
             ['from_node_id' => 334, 'to_node_id' => 333, 'is_stairs' => 0],
-            // ['from_node_id' => 355, 'to_node_id' => 333, 'is_stairs' => 0], /Test 3 di comment atau dipotong
+            ['from_node_id' => 355, 'to_node_id' => 333, 'is_stairs' => 0], //Test 3 di comment atau dipotong
             ['from_node_id' => 352, 'to_node_id' => 338, 'is_stairs' => 0],
             ['from_node_id' => 338, 'to_node_id' => 337, 'is_stairs' => 0],
             ['from_node_id' => 337, 'to_node_id' => 336, 'is_stairs' => 0],
             ['from_node_id' => 335, 'to_node_id' => 336, 'is_stairs' => 0],
-            // ['from_node_id' => 335, 'to_node_id' => 353, 'is_stairs' => 0], /Test 3 di comment atau dipotong
+            ['from_node_id' => 335, 'to_node_id' => 353, 'is_stairs' => 0], //Test 3 di comment atau dipotong
             ['from_node_id' => 352, 'to_node_id' => 338, 'is_stairs' => 0],
             ['from_node_id' => 354, 'to_node_id' => 353, 'is_stairs' => 0],
             ['from_node_id' => 355, 'to_node_id' => 354, 'is_stairs' => 0],
@@ -103,7 +103,7 @@ class Floor3Seeder extends Seeder
 
             // Floors 2-3 //
             ['from_node_id' => 241, 'to_node_id' => 341, 'is_stairs' => 1, 'weight' => 1], //Elevator
-            ['from_node_id' => 243, 'to_node_id' => 342, 'is_stairs' => 1, 'weight' => 10], //Tangga
+            ['from_node_id' => 242, 'to_node_id' => 343, 'is_stairs' => 1, 'weight' => 10], //Tangga
 
         ];
 

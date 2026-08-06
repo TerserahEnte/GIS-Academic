@@ -36,13 +36,13 @@ class Floor8Seeder extends Seeder
         ['id' => 837, 'name' => 'Persimpangan Depan Laboratorium 805', 'floor' => 8, 'lat' => 196, 'lng' => 238],
         // ['id' => 838, 'name' => 'Persimpangan Depan Ruangan 606', 'floor' => 8, 'lat' => 196, 'lng' => 453],
 
-        ['id' => 839, 'name' => 'Persimpangan Depan Tangga Turun', 'floor' => 8, 'lat' => 512, 'lng' => 1815],
-        ['id' => 840, 'name' => 'Persimpangan Depan Tangga Naik', 'floor' => 8, 'lat' => 512, 'lng' => 1723],
+        ['id' => 839, 'name' => 'Persimpangan Depan Tangga Naik', 'floor' => 8, 'lat' => 512, 'lng' => 1815],
+        ['id' => 840, 'name' => 'Persimpangan Depan Tangga Turun', 'floor' => 8, 'lat' => 512, 'lng' => 1723],
 
         // Stairs & Elevator
         ['id' => 841, 'name' => 'Elevator', 'floor' => 8, 'lat' => 759, 'lng' => 126],
-        ['id' => 842, 'name' => 'Tangga Turun', 'floor' => 8, 'lat' => 554, 'lng' => 1815],
-        ['id' => 843, 'name' => 'Tangga Naik', 'floor' => 8, 'lat' => 554, 'lng' => 1723],
+        ['id' => 842, 'name' => 'Tangga Naik', 'floor' => 8, 'lat' => 554, 'lng' => 1815],
+        ['id' => 843, 'name' => 'Tangga Turun', 'floor' => 8, 'lat' => 554, 'lng' => 1723],
 
         // Corridors
         ['id' => 850, 'name' => 'Depan Toilet', 'floor' => 8, 'lat' => 624, 'lng' => 436],
@@ -71,12 +71,12 @@ class Floor8Seeder extends Seeder
             ['from_node_id' => 851, 'to_node_id' => 850, 'is_stairs' => 0],
             ['from_node_id' => 856, 'to_node_id' => 850, 'is_stairs' => 0],
             ['from_node_id' => 856, 'to_node_id' => 857, 'is_stairs' => 0],
-            ['from_node_id' => 860, 'to_node_id' => 857, 'is_stairs' => 0],
+            ['from_node_id' => 860, 'to_node_id' => 857, 'is_stairs' => 0], // Case Sekanrio 3 Hallway diputus
             ['from_node_id' => 860, 'to_node_id' => 855, 'is_stairs' => 0],
             ['from_node_id' => 854, 'to_node_id' => 855, 'is_stairs' => 0],
             ['from_node_id' => 854, 'to_node_id' => 853, 'is_stairs' => 0],
             ['from_node_id' => 859, 'to_node_id' => 853, 'is_stairs' => 0],
-            ['from_node_id' => 859, 'to_node_id' => 858, 'is_stairs' => 0],
+            ['from_node_id' => 859, 'to_node_id' => 858, 'is_stairs' => 0], // Case Sekanrio 3 Hallway diputus
             ['from_node_id' => 837, 'to_node_id' => 858, 'is_stairs' => 0],
             ['from_node_id' => 837, 'to_node_id' => 852, 'is_stairs' => 0],
             ['from_node_id' => 858, 'to_node_id' => 856, 'is_stairs' => 0],
@@ -117,7 +117,7 @@ class Floor8Seeder extends Seeder
 
             // Floors 5-6 //
             ['from_node_id' => 741, 'to_node_id' => 841, 'is_stairs' => 1, 'weight' => 1], //Elevator
-            ['from_node_id' => 743, 'to_node_id' => 842, 'is_stairs' => 1, 'weight' => 10], //Tangga
+            ['from_node_id' => 742, 'to_node_id' => 843, 'is_stairs' => 1, 'weight' => 10], //Tangga
         ];
 
         $bidirectionalEdges = [];

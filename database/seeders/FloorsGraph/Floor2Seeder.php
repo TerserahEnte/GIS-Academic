@@ -34,13 +34,13 @@ class Floor2Seeder extends Seeder
             ['id' => 236, 'name' => 'Persimpangan Depan Ruangan 204', 'floor' => 2, 'lat' => 196, 'lng' => 1091],
             ['id' => 237, 'name' => 'Persimpangan Depan Ruangan 205', 'floor' => 2, 'lat' => 196, 'lng' => 539],
             ['id' => 238, 'name' => 'Persimpangan Depan Ruangan 206', 'floor' => 2, 'lat' => 196, 'lng' => 453],
-            ['id' => 239, 'name' => 'Persimpangan Depan Tangga Turun', 'floor' => 2, 'lat' => 512, 'lng' => 1815],
-            ['id' => 240, 'name' => 'Persimpangan Depan Tangga Naik', 'floor' => 2, 'lat' => 512, 'lng' => 1723],
+            ['id' => 239, 'name' => 'Persimpangan Depan Tangga Naik', 'floor' => 2, 'lat' => 512, 'lng' => 1815],
+            ['id' => 240, 'name' => 'Persimpangan Depan Tangga Turun', 'floor' => 2, 'lat' => 512, 'lng' => 1723],
 
             // Stairs
             ['id' => 241, 'name' => 'Elevator', 'floor' => 2, 'lat' => 759, 'lng' => 126],
-            ['id' => 242, 'name' => 'Tangga Turun', 'floor' => 2, 'lat' => 554, 'lng' => 1815],
-            ['id' => 243, 'name' => 'Tangga Naik', 'floor' => 2, 'lat' => 554, 'lng' => 1723],
+            ['id' => 242, 'name' => 'Tangga Naik', 'floor' => 2, 'lat' => 554, 'lng' => 1815],
+            ['id' => 243, 'name' => 'Tangga Turun', 'floor' => 2, 'lat' => 554, 'lng' => 1723],
 
             // Corridors
             ['id' => 250, 'name' => 'Depan Toilet', 'floor' => 2, 'lat' => 612, 'lng' => 423],
@@ -101,7 +101,7 @@ class Floor2Seeder extends Seeder
 
             // Floors 1-2 //
             ['from_node_id' => 141, 'to_node_id' => 241, 'is_stairs' => 1, 'weight' => 1], //Elevator
-            ['from_node_id' => 140, 'to_node_id' => 242, 'is_stairs' => 1, 'weight' => 10], //Tangga
+            ['from_node_id' => 140, 'to_node_id' => 243, 'is_stairs' => 1, 'weight' => 10], //Tangga
 
         ];
 

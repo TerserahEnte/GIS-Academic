@@ -36,19 +36,19 @@ class Floor10Seeder extends Seeder
         // ['id' => 1037, 'name' => 'Persimpangan Depan Laboratorium 905', 'floor' => 10, 'lat' => 196, 'lng' => 238],
         // // ['id' => 1038, 'name' => 'Persimpangan Depan Ruangan 606', 'floor' => 10, 'lat' => 196, 'lng' => 453],
 
-        // ['id' => 1039, 'name' => 'Persimpangan Depan Tangga Turun', 'floor' => 10, 'lat' => 512, 'lng' => 1815],
-        // ['id' => 1040, 'name' => 'Persimpangan Depan Tangga Naik', 'floor' => 10, 'lat' => 512, 'lng' => 1723],
+        // ['id' => 1039, 'name' => 'Persimpangan Depan Tangga Naik', 'floor' => 10, 'lat' => 512, 'lng' => 1815],
+        // ['id' => 1040, 'name' => 'Persimpangan Depan Tangga Turun', 'floor' => 10, 'lat' => 512, 'lng' => 1723],
 
         // Stairs & Elevator
         ['id' => 1041, 'name' => 'Elevator', 'floor' => 10, 'lat' => 759, 'lng' => 126],
-        ['id' => 1042, 'name' => 'Tangga Turun', 'floor' => 10, 'lat' => 554, 'lng' => 1815],
-        // ['id' => 1043, 'name' => 'Tangga Naik', 'floor' => 10, 'lat' => 554, 'lng' => 1723],
+        ['id' => 1043, 'name' => 'Tangga Turun', 'floor' => 10, 'lat' => 554, 'lng' => 1715],
+        // ['id' => 1042, 'name' => 'Tangga Naik', 'floor' => 10, 'lat' => 554, 'lng' => 1723],
 
         // Corridors
         // ['id' => 1050, 'name' => 'Depan Toilet', 'floor' => 10, 'lat' => 624, 'lng' => 436],
         // ['id' => 1051, 'name' => 'Lorong Kiri-Atas', 'floor' => 10, 'lat' => 624, 'lng' => 126],
         ['id' => 1052, 'name' => 'Lorong Kiri-Bawah', 'floor' => 10, 'lat' => 196, 'lng' => 126],
-        ['id' => 1053, 'name' => 'Lorong Kanan-Bawah', 'floor' => 10, 'lat' => 196, 'lng' => 1815],
+        ['id' => 1053, 'name' => 'Lorong Kanan-Bawah', 'floor' => 10, 'lat' => 196, 'lng' => 1715],
         // ['id' => 1054, 'name' => 'Lorong Kanan-Tengah', 'floor' => 10, 'lat' => 512, 'lng' => 1606],
         // ['id' => 1055, 'name' => 'Lorong Kanan-Atas', 'floor' => 10, 'lat' => 911, 'lng' => 1606],
         // ['id' => 1056, 'name' => 'Lorong Tengah-Tengah', 'floor' => 10, 'lat' => 624, 'lng' => 747],
@@ -74,7 +74,7 @@ class Floor10Seeder extends Seeder
 
             // Elevator & Tangga
             ['from_node_id' => 1052, 'to_node_id' => 1041, 'is_stairs' => 0],
-            ['from_node_id' => 1053, 'to_node_id' => 1042, 'is_stairs' => 0],
+            ['from_node_id' => 1053, 'to_node_id' => 1043, 'is_stairs' => 0],
             
 
             // WC
@@ -88,7 +88,7 @@ class Floor10Seeder extends Seeder
 
             // Floors 5-6 //
             ['from_node_id' => 941, 'to_node_id' => 1041, 'is_stairs' => 1, 'weight' => 1], //Elevator
-            ['from_node_id' => 943, 'to_node_id' => 1042, 'is_stairs' => 1, 'weight' => 10], //Tangga
+            ['from_node_id' => 942, 'to_node_id' => 1043, 'is_stairs' => 1, 'weight' => 10], //Tangga
         ];
 
         $bidirectionalEdges = [];

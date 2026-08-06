@@ -3,11 +3,18 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class GraphCoordinatesSeeder extends Seeder
 {
     public function run()
     {
+        Schema::disableForeignKeyConstraints();
+        DB::table('edges')->truncate();
+        DB::table('nodes')->truncate();
+        Schema::enableForeignKeyConstraints();
+
         $this->call([
             FloorsGraph\Floor1Seeder::class,
             FloorsGraph\Floor2Seeder::class,

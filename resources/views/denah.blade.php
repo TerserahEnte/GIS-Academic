@@ -31,7 +31,7 @@
 
             <content>
                 <div id="runganFoto-card"
-                    class="w-full max-w-lg mx-auto rounded-xl px-4 py-6 my-10 bg-gray-200 shadow-lg">
+                    class="w-full max-w-xl mx-auto rounded-xl px-4 py-6 my-10 bg-gray-200 shadow-lg">
 
                     <div class="w-full flex flex-col gap-3">
                         <p class="text-center text-2xl font-bold">Peta</p>

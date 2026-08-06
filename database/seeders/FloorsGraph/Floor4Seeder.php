@@ -34,13 +34,13 @@ class Floor4Seeder extends Seeder
             ['id' => 436, 'name' => 'Persimpangan Depan Ruangan 404', 'floor' => 4, 'lat' => 196, 'lng' => 1091],
             ['id' => 437, 'name' => 'Persimpangan Depan Ruangan 405', 'floor' => 4, 'lat' => 196, 'lng' => 539],
             ['id' => 438, 'name' => 'Persimpangan Depan Ruangan 406', 'floor' => 4, 'lat' => 196, 'lng' => 453],
-            ['id' => 439, 'name' => 'Persimpangan Depan Tangga Turun', 'floor' => 4, 'lat' => 512, 'lng' => 1815],
-            ['id' => 440, 'name' => 'Persimpangan Depan Tangga Naik', 'floor' => 4, 'lat' => 512, 'lng' => 1723],
+            ['id' => 439, 'name' => 'Persimpangan Depan Tangga Naik', 'floor' => 4, 'lat' => 512, 'lng' => 1815],
+            ['id' => 440, 'name' => 'Persimpangan Depan Tangga Turun', 'floor' => 4, 'lat' => 512, 'lng' => 1723],
 
             // Stairs & Elevator
             ['id' => 441, 'name' => 'Elevator', 'floor' => 4, 'lat' => 759, 'lng' => 126],
-            ['id' => 442, 'name' => 'Tangga Turun', 'floor' => 4, 'lat' => 554, 'lng' => 1815],
-            ['id' => 443, 'name' => 'Tangga Naik', 'floor' => 4, 'lat' => 554, 'lng' => 1723],
+            ['id' => 442, 'name' => 'Tangga Naik', 'floor' => 4, 'lat' => 554, 'lng' => 1815],
+            ['id' => 443, 'name' => 'Tangga Turun', 'floor' => 4, 'lat' => 554, 'lng' => 1723],
 
             // Corridors
             ['id' => 450, 'name' => 'Depan Toilet', 'floor' => 4, 'lat' => 612, 'lng' => 423],
@@ -101,7 +101,7 @@ class Floor4Seeder extends Seeder
 
             // Floors 3-4 //
             ['from_node_id' => 341, 'to_node_id' => 441, 'is_stairs' => 1, 'weight' => 1], // Elevator
-            ['from_node_id' => 343, 'to_node_id' => 442, 'is_stairs' => 1, 'weight' => 10], //Tangga
+            ['from_node_id' => 342, 'to_node_id' => 443, 'is_stairs' => 1, 'weight' => 10], //Tangga
         ];
 
         $bidirectionalEdges = [];
